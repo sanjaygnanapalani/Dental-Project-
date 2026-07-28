@@ -32,14 +32,20 @@ jobs:
           python backend/app.py &
           npx wait-on http://localhost:5000/api/health --timeout 60000
 
-      - name: 5. Execute Grafana k6 Baseline Load Test (100 VUs, 1 min)
-        uses: grafana/k6-action@v0.5.0
-        with:
-          filename: load-tests/scenarios/baselineLoadTest.js
+      - name: 5. Install Grafana k6
+        run: |
+          sudo gpg -k || true
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install -y k6
+
+      - name: 6. Execute Grafana k6 Baseline Load Test (100 VUs, 1 min)
         env:
           API_URL: "http://localhost:5000"
+        run: k6 run load-tests/scenarios/baselineLoadTest.js
 
-      - name: 6. Upload Load Test Report Artifacts
+      - name: 7. Upload Load Test Report Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
