@@ -14,7 +14,9 @@
     "test:edge": "cross-env BROWSER=edge mocha --config .mocharc.json tests/e2e/**/*.test.js",
     "test:headless": "cross-env HEADLESS=true mocha --config .mocharc.json tests/e2e/**/*.test.js",
     "test:dynamic": "mocha --config .mocharc.json tests/dynamic/dynamicFormDiscovery.test.js",
-    "test:all": "mocha --config .mocharc.json tests/**/*.test.js"
+    "test:all": "mocha --config .mocharc.json tests/**/*.test.js",
+    "test:load": "k6 run load-tests/scenarios/baselineLoadTest.js",
+    "test:load:report": "k6 run load-tests/scenarios/baselineLoadTest.js"
   },
   "dependencies": {
     "jspdf": "^4.2.1",
