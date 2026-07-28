@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DnaAnimation from '../components/common/DnaAnimation';
+import AppLogo from '../components/common/AppLogo';
 import { Activity, Eye, EyeOff, CheckCircle2, Lock, Mail } from 'lucide-react';
 
 export default function LoginScreen() {
@@ -34,7 +35,7 @@ export default function LoginScreen() {
 
     setLoading(true);
     setSuccessMsg(true);
-    
+
     try {
       await login(email, password);
     } catch (err) {
@@ -66,11 +67,13 @@ export default function LoginScreen() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0E1A',
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '24px'
+        padding: '24px',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <DnaAnimation blur={true} opacity={0.5} />
@@ -89,26 +92,14 @@ export default function LoginScreen() {
       >
         {/* Header */}
         <div style={{ textAlign: 'center' }}>
-          <div
-            style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 16px',
-              boxShadow: '0 0 24px rgba(0, 212, 170, 0.4)'
-            }}
-          >
-            <Activity size={32} color="#0A0E1A" strokeWidth={2.5} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+            <AppLogo size={60} iconSize={34} borderRadius={18} />
           </div>
 
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#F8FAFC' }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
             Welcome Back
           </h2>
-          <p style={{ fontSize: '0.88rem', color: '#94A3B8', marginTop: '4px' }}>
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
             Sign in to access your PLGA vascular analysis dashboard
           </p>
         </div>
@@ -118,13 +109,13 @@ export default function LoginScreen() {
           <div
             style={{
               backgroundColor: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid #10B981',
+              border: '1px solid var(--success-green)',
               borderRadius: '12px',
               padding: '14px',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              color: '#10B981',
+              color: 'var(--success-green)',
               fontSize: '0.9rem',
               fontWeight: 700,
               animation: 'fadeIn 0.3s ease'
@@ -137,7 +128,7 @@ export default function LoginScreen() {
 
         {/* Form Error */}
         {errors.form && (
-          <div style={{ color: '#EF4444', fontSize: '0.85rem', textAlign: 'center', fontWeight: 600 }}>
+          <div style={{ color: 'var(--error-red)', fontSize: '0.85rem', textAlign: 'center', fontWeight: 600 }}>
             {errors.form}
           </div>
         )}
@@ -145,7 +136,7 @@ export default function LoginScreen() {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           {/* Email */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#00D4AA', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '6px' }}>
               EMAIL ADDRESS
             </label>
             <div style={{ position: 'relative' }}>
@@ -157,14 +148,14 @@ export default function LoginScreen() {
                 onChange={e => setEmail(e.target.value)}
                 style={{ paddingLeft: '40px' }}
               />
-              <Mail size={18} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              <Mail size={18} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             </div>
-            {errors.email && <span style={{ color: '#EF4444', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{errors.email}</span>}
+            {errors.email && <span style={{ color: 'var(--error-red)', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{errors.email}</span>}
           </div>
 
           {/* Password */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#00D4AA', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '6px' }}>
               PASSWORD
             </label>
             <div style={{ position: 'relative' }}>
@@ -176,30 +167,30 @@ export default function LoginScreen() {
                 onChange={e => setPassword(e.target.value)}
                 style={{ paddingLeft: '40px', paddingRight: '40px' }}
               />
-              <Lock size={18} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              <Lock size={18} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && <span style={{ color: '#EF4444', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{errors.password}</span>}
+            {errors.password && <span style={{ color: 'var(--error-red)', fontSize: '0.75rem', marginTop: '4px', display: 'block' }}>{errors.password}</span>}
           </div>
 
           {/* Remember Me & Forgot Password */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.82rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: '#94A3B8' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: 'var(--text-secondary)' }}>
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={e => setRememberMe(e.target.checked)}
-                style={{ accentColor: '#00D4AA', width: '16px', height: '16px' }}
+                style={{ accentColor: 'var(--teal-accent)', width: '16px', height: '16px' }}
               />
               Remember Me
             </label>
-            <Link to="/forgot-password" style={{ color: '#00B4D8', textDecoration: 'none', fontWeight: 600 }}>
+            <Link to="/forgot-password" style={{ color: 'var(--cyan-accent)', textDecoration: 'none', fontWeight: 600 }}>
               Forgot Password?
             </Link>
           </div>
@@ -221,9 +212,9 @@ export default function LoginScreen() {
         </form>
 
         {/* Register link */}
-        <div style={{ textAlign: 'center', fontSize: '0.85rem', color: '#94A3B8' }}>
+        <div style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
           Don't have an account?{' '}
-          <Link to="/signup" style={{ color: '#00D4AA', textDecoration: 'none', fontWeight: 700 }}>
+          <Link to="/signup" style={{ color: 'var(--teal-accent)', textDecoration: 'none', fontWeight: 700 }}>
             Register
           </Link>
         </div>

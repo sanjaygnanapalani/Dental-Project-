@@ -27,7 +27,7 @@ export default function TopicCard({ icon: Icon, title, description, slug, onClic
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#00D4AA'
+            color: 'var(--teal-accent)'
           }}
         >
           <Icon size={22} />
@@ -35,7 +35,7 @@ export default function TopicCard({ icon: Icon, title, description, slug, onClic
 
         <div
           style={{
-            color: '#00B4D8',
+            color: 'var(--cyan-accent)',
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
@@ -49,10 +49,10 @@ export default function TopicCard({ icon: Icon, title, description, slug, onClic
       </div>
 
       <div>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '6px' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
           {title}
         </h3>
-        <p style={{ fontSize: '0.85rem', color: '#94A3B8', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
           {description}
         </p>
       </div>

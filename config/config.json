@@ -1,0 +1,18 @@
+{
+  "browser": "chrome",
+  "headless": true,
+  "implicitWaitMs": 5000,
+  "explicitWaitMs": 15000,
+  "pageLoadTimeoutMs": 30000,
+  "scriptTimeoutMs": 15000,
+  "retryCount": 2,
+  "baseUrl": "http://localhost:5173",
+  "environment": "local",
+  "reportsDir": "reports",
+  "excelReportPath": "excel/E2E_Report.xlsx",
+  "logLevel": "info",
+  "windowSize": {
+    "width": 1920,
+    "height": 1080
+  }
+}

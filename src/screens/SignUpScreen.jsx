@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DnaAnimation from '../components/common/DnaAnimation';
+import AppLogo from '../components/common/AppLogo';
 import { Activity, Eye, EyeOff, CheckCircle2, User, Building, Mail, Phone, Lock } from 'lucide-react';
 
 export default function SignUpScreen() {
@@ -27,16 +28,16 @@ export default function SignUpScreen() {
 
   const calculatePasswordStrength = (pass) => {
     let score = 0;
-    if (!pass) return { score: 0, label: 'None', color: '#64748B' };
+    if (!pass) return { score: 0, label: 'None', color: 'var(--text-secondary)' };
     if (pass.length >= 8) score++;
     if (/\d/.test(pass)) score++;
     if (/[A-Z]/.test(pass)) score++;
     if (/[^A-Za-z0-9]/.test(pass)) score++;
 
-    if (score <= 1) return { score: 1, label: 'Weak', color: '#EF4444' };
-    if (score === 2) return { score: 2, label: 'Fair', color: '#F59E0B' };
-    if (score === 3) return { score: 3, label: 'Good', color: '#00B4D8' };
-    return { score: 4, label: 'Strong', color: '#10B981' };
+    if (score <= 1) return { score: 1, label: 'Weak', color: 'var(--error-red)' };
+    if (score === 2) return { score: 2, label: 'Fair', color: 'var(--warning-amber)' };
+    if (score === 3) return { score: 3, label: 'Good', color: 'var(--cyan-accent)' };
+    return { score: 4, label: 'Strong', color: 'var(--success-green)' };
   };
 
   const strength = calculatePasswordStrength(formData.password);
@@ -86,11 +87,13 @@ export default function SignUpScreen() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0E1A',
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '32px 16px'
+        padding: '32px 16px',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <DnaAnimation blur={true} opacity={0.4} />
@@ -108,26 +111,14 @@ export default function SignUpScreen() {
       >
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div
-            style={{
-              width: '52px',
-              height: '52px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 12px',
-              boxShadow: '0 0 24px rgba(0, 212, 170, 0.4)'
-            }}
-          >
-            <Activity size={28} color="#0A0E1A" strokeWidth={2.5} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+            <AppLogo size={56} iconSize={30} borderRadius={16} />
           </div>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#F8FAFC' }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)' }}>
             Researcher Registration
           </h2>
-          <p style={{ fontSize: '0.85rem', color: '#94A3B8', marginTop: '4px' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
             Create an account to start analyzing microsphere vessel networks
           </p>
         </div>
@@ -137,13 +128,13 @@ export default function SignUpScreen() {
           <div
             style={{
               backgroundColor: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid #10B981',
+              border: '1px solid var(--success-green)',
               borderRadius: '12px',
               padding: '14px',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              color: '#10B981',
+              color: 'var(--success-green)',
               fontSize: '0.9rem',
               fontWeight: 700,
               marginBottom: '20px'
@@ -155,7 +146,7 @@ export default function SignUpScreen() {
         )}
 
         {errors.form && (
-          <div style={{ color: '#EF4444', fontSize: '0.85rem', textAlign: 'center', fontWeight: 600, marginBottom: '16px' }}>
+          <div style={{ color: 'var(--error-red)', fontSize: '0.85rem', textAlign: 'center', fontWeight: 600, marginBottom: '16px' }}>
             {errors.form}
           </div>
         )}
@@ -164,7 +155,7 @@ export default function SignUpScreen() {
           {/* First & Last Name Side by Side */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
                 FIRST NAME *
               </label>
               <div style={{ position: 'relative' }}>
@@ -175,13 +166,13 @@ export default function SignUpScreen() {
                   onChange={e => setFormData({ ...formData, firstName: e.target.value })}
                   style={{ paddingLeft: '38px' }}
                 />
-                <User size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <User size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
-              {errors.firstName && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.firstName}</span>}
+              {errors.firstName && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.firstName}</span>}
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
                 LAST NAME *
               </label>
               <input
@@ -190,13 +181,13 @@ export default function SignUpScreen() {
                 value={formData.lastName}
                 onChange={e => setFormData({ ...formData, lastName: e.target.value })}
               />
-              {errors.lastName && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.lastName}</span>}
+              {errors.lastName && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.lastName}</span>}
             </div>
           </div>
 
           {/* Email */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
               EMAIL ADDRESS *
             </label>
             <div style={{ position: 'relative' }}>
@@ -207,14 +198,14 @@ export default function SignUpScreen() {
                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                 style={{ paddingLeft: '38px' }}
               />
-              <Mail size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              <Mail size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             </div>
-            {errors.email && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.email}</span>}
+            {errors.email && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.email}</span>}
           </div>
 
           {/* Phone (Optional) */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#94A3B8', marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
               PHONE NUMBER (OPTIONAL)
             </label>
             <div style={{ position: 'relative' }}>
@@ -226,14 +217,14 @@ export default function SignUpScreen() {
                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                 style={{ paddingLeft: '38px' }}
               />
-              <Phone size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              <Phone size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             </div>
           </div>
 
           {/* Institution & Role */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
                 INSTITUTION / UNIV *
               </label>
               <div style={{ position: 'relative' }}>
@@ -244,13 +235,13 @@ export default function SignUpScreen() {
                   onChange={e => setFormData({ ...formData, institution: e.target.value })}
                   style={{ paddingLeft: '38px' }}
                 />
-                <Building size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <Building size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
-              {errors.institution && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.institution}</span>}
+              {errors.institution && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.institution}</span>}
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
                 RESEARCH ROLE
               </label>
               <select
@@ -269,7 +260,7 @@ export default function SignUpScreen() {
 
           {/* Password */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
               PASSWORD *
             </label>
             <div style={{ position: 'relative' }}>
@@ -281,20 +272,20 @@ export default function SignUpScreen() {
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
                 style={{ paddingLeft: '38px', paddingRight: '38px' }}
               />
-              <Lock size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              <Lock size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
+                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
-            {errors.password && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.password}</span>}
+            {errors.password && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.password}</span>}
 
             {/* 4-bar Password Strength Meter */}
             <div style={{ marginTop: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: '#94A3B8', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                 <span>Password Strength</span>
                 <span style={{ color: strength.color, fontWeight: 700 }}>{strength.label}</span>
               </div>
@@ -305,7 +296,7 @@ export default function SignUpScreen() {
                     style={{
                       height: '100%',
                       borderRadius: '2px',
-                      backgroundColor: idx <= strength.score ? strength.color : 'rgba(255, 255, 255, 0.1)',
+                      backgroundColor: idx <= strength.score ? strength.color : 'var(--input-border)',
                       transition: 'background-color 0.3s ease'
                     }}
                   />
@@ -316,7 +307,7 @@ export default function SignUpScreen() {
 
           {/* Confirm Password */}
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '4px' }}>
               CONFIRM PASSWORD *
             </label>
             <input
@@ -326,21 +317,21 @@ export default function SignUpScreen() {
               value={formData.confirmPassword}
               onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
             />
-            {errors.confirmPassword && <span style={{ color: '#EF4444', fontSize: '0.72rem' }}>{errors.confirmPassword}</span>}
+            {errors.confirmPassword && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem' }}>{errors.confirmPassword}</span>}
           </div>
 
           {/* Terms Checkbox */}
           <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#94A3B8', cursor: 'pointer' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
               <input
                 type="checkbox"
                 checked={formData.agreeTerms}
                 onChange={e => setFormData({ ...formData, agreeTerms: e.target.checked })}
-                style={{ accentColor: '#00D4AA', width: '16px', height: '16px' }}
+                style={{ accentColor: 'var(--teal-accent)', width: '16px', height: '16px' }}
               />
               I accept the Research Terms & Data Guidelines
             </label>
-            {errors.agreeTerms && <span style={{ color: '#EF4444', fontSize: '0.72rem', display: 'block', marginTop: '2px' }}>{errors.agreeTerms}</span>}
+            {errors.agreeTerms && <span style={{ color: 'var(--error-red)', fontSize: '0.72rem', display: 'block', marginTop: '2px' }}>{errors.agreeTerms}</span>}
           </div>
 
           {/* Submit Button */}
@@ -369,9 +360,9 @@ export default function SignUpScreen() {
           </button>
         </form>
 
-        <div style={{ textAlign: 'center', fontSize: '0.85rem', color: '#94A3B8', marginTop: '16px' }}>
+        <div style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '16px' }}>
           Already registered?{' '}
-          <Link to="/login" style={{ color: '#00D4AA', textDecoration: 'none', fontWeight: 700 }}>
+          <Link to="/login" style={{ color: 'var(--teal-accent)', textDecoration: 'none', fontWeight: 700 }}>
             Log In
           </Link>
         </div>

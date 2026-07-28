@@ -63,9 +63,8 @@ export default function HomeTab({ onSwitchTab }) {
           style={{
             padding: '32px 28px',
             marginBottom: '36px',
-            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(10, 14, 26, 0.94) 100%)',
-            border: '1px solid rgba(0, 212, 170, 0.25)',
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)'
+            border: '1px solid var(--glass-border)',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)'
           }}
         >
           <div style={{ marginBottom: '16px' }}>
@@ -79,20 +78,20 @@ export default function HomeTab({ onSwitchTab }) {
             style={{
               fontSize: '1.75rem',
               fontWeight: 800,
-              color: '#F8FAFC',
+              color: 'var(--text-primary)',
               lineHeight: 1.3,
               marginBottom: '14px',
               minHeight: '4.2rem'
             }}
           >
             {typedTitle}
-            <span style={{ color: '#00D4AA', animation: 'blink 1s infinite' }}>|</span>
+            <span style={{ color: 'var(--teal-accent)', animation: 'blink 1s infinite' }}>|</span>
           </h1>
 
           <p
             style={{
               fontSize: '0.95rem',
-              color: '#94A3B8',
+              color: 'var(--text-secondary)',
               lineHeight: 1.6,
               marginBottom: '24px',
               maxWidth: '820px'
@@ -108,7 +107,7 @@ export default function HomeTab({ onSwitchTab }) {
               onClick={() => onSwitchTab('analyzer')}
               style={{ padding: '12px 28px', fontSize: '0.95rem' }}
             >
-              <Play size={18} fill="#050B14" />
+              <Play size={18} fill="#FFFFFF" />
               <span>Start Analysis</span>
             </button>
 
@@ -126,7 +125,7 @@ export default function HomeTab({ onSwitchTab }) {
         {/* Understanding the Science Section */}
         <div style={{ marginBottom: '20px' }}>
           <span className="section-label">THEORETICAL FOUNDATION</span>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#F8FAFC', marginTop: '4px' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
             Understanding the Science
           </h2>
         </div>

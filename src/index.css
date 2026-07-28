@@ -1,22 +1,49 @@
-:root {
+:root, [data-theme="dark"] {
   --dark-bg: #0A0E1A;
   --card-bg: #0F172A;
+  --glass-bg: rgba(15, 23, 42, 0.78);
+  --glass-border: rgba(0, 212, 170, 0.16);
   --teal-accent: #00D4AA;
   --cyan-accent: #00B4D8;
   --pink-accent: #F472B6;
   --gold-accent: #FBBF24;
   --muted-white: #94A3B8;
   --pure-white: #F8FAFC;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
   --error-red: #EF4444;
   --warning-amber: #F59E0B;
   --success-green: #10B981;
+  --input-bg: rgba(10, 14, 26, 0.7);
+  --input-border: rgba(148, 163, 184, 0.25);
 
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: dark;
-  color: var(--pure-white);
+  color: var(--text-primary);
   background-color: var(--dark-bg);
+}
+
+[data-theme="light"] {
+  --dark-bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --glass-bg: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(0, 168, 138, 0.22);
+  --teal-accent: #00A88A;
+  --cyan-accent: #0090B0;
+  --pink-accent: #DB4A8C;
+  --gold-accent: #D89B0A;
+  --muted-white: #64748B;
+  --pure-white: #0F172A;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --error-red: #DC2626;
+  --warning-amber: #D97706;
+  --success-green: #059669;
+  --input-bg: #F1F5F9;
+  --input-border: rgba(100, 116, 139, 0.25);
+  color-scheme: light;
 }
 
 * {
@@ -29,25 +56,26 @@ body {
   margin: 0;
   min-height: 100vh;
   background-color: var(--dark-bg);
-  color: var(--pure-white);
+  color: var(--text-primary);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Glassmorphism utility card */
 .glass-card {
-  background: rgba(15, 23, 42, 0.78);
+  background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 212, 170, 0.16);
+  border: 1px solid var(--glass-border);
   border-radius: 16px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 .glass-card-hover:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 212, 170, 0.4);
+  border-color: var(--teal-accent);
   box-shadow: 0 12px 40px 0 rgba(0, 212, 170, 0.12);
 }
 
@@ -61,7 +89,7 @@ body {
 /* Primary Gradient Button */
 .btn-gradient {
   background: linear-gradient(135deg, var(--teal-accent) 0%, var(--cyan-accent) 100%);
-  color: #050B14;
+  color: #FFFFFF;
   font-weight: 700;
   border: none;
   padding: 12px 24px;
@@ -95,9 +123,9 @@ body {
 /* Outlined Button */
 .btn-outlined {
   background: transparent;
-  color: var(--pure-white);
+  color: var(--text-primary);
   font-weight: 600;
-  border: 1px solid rgba(0, 212, 170, 0.4);
+  border: 1px solid var(--teal-accent);
   padding: 12px 24px;
   border-radius: 12px;
   cursor: pointer;
@@ -118,14 +146,14 @@ body {
 /* Form Inputs */
 .form-input {
   width: 100%;
-  background: rgba(10, 14, 26, 0.7);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 10px;
   padding: 12px 16px;
-  color: var(--pure-white);
+  color: var(--text-primary);
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .form-input:focus {
@@ -135,18 +163,18 @@ body {
 
 .form-select {
   width: 100%;
-  background: rgba(10, 14, 26, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 10px;
   padding: 12px 16px;
-  color: var(--pure-white);
+  color: var(--text-primary);
   font-size: 0.95rem;
   outline: none;
 }
 
 .form-select option {
   background-color: var(--card-bg);
-  color: var(--pure-white);
+  color: var(--text-primary);
 }
 
 /* Section Header Small Uppercase Label */
@@ -196,7 +224,7 @@ body {
 
 /* Shimmer / Skeleton pulse for analyzer loading */
 .skeleton-pulse {
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.6) 25%, rgba(30, 41, 59, 0.8) 50%, rgba(15, 23, 42, 0.6) 75%);
+  background: linear-gradient(90deg, var(--input-bg) 25%, var(--card-bg) 50%, var(--input-bg) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 12px;

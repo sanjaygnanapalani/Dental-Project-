@@ -42,9 +42,23 @@ export async function initDb() {
         endpoints INTEGER,
         lacunarity REAL,
         connectivity REAL,
+        binary_b64 TEXT,
+        skeleton_b64 TEXT,
+        overlay_b64 TEXT,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+    // Ensure table columns exist if upgrading existing schema
+    try {
+      db.run(`ALTER TABLE analysis_records ADD COLUMN binary_b64 TEXT`);
+    } catch (e) {}
+    try {
+      db.run(`ALTER TABLE analysis_records ADD COLUMN skeleton_b64 TEXT`);
+    } catch (e) {}
+    try {
+      db.run(`ALTER TABLE analysis_records ADD COLUMN overlay_b64 TEXT`);
+    } catch (e) {}
 
     // Insert default demo user if empty
     try {
@@ -111,6 +125,26 @@ export function getDb() {
 }
 
 /**
+ * Downloads the active SQLite database binary file as a .sqlite download
+ */
+export async function exportDatabaseFile() {
+  if (!db) await initDb();
+  if (!db) return;
+
+  const binaryArray = db.export();
+  const blob = new Blob([binaryArray], { type: 'application/x-sqlite3' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `plga_vascular_db_${Date.now()}.sqlite`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/**
  * High-Level Helper Exports for Auth & Analysis
  */
 export async function saveUser({ email, firstName, lastName, institution, role, password }) {
@@ -128,28 +162,57 @@ export async function getUserByEmail(email) {
 }
 
 export async function saveAnalysisRecord(record) {
+  if (!db) await initDb();
+
+  const researcherEmail = record.researcherEmail || record.user_email || record.email || 'sanjay@biomed.org';
+  const researcherName = record.researcherName || record.user_name || 'Sanjay Grs';
+  const institution = record.institution || 'Biomedical Institute';
+  const role = record.role || 'Researcher';
+
+  const vesselDensity = record.vesselDensity ?? record.vessel_density ?? 0;
+  const branchPoints = record.branchPoints ?? record.branch_points ?? 0;
+  const vesselSegments = record.vesselSegments ?? record.vessel_segments ?? 0;
+  const totalLength = record.totalLength ?? record.total_length ?? 0;
+  const avgWidth = record.avgWidth ?? record.avg_width ?? 0;
+  const endpoints = record.endpoints ?? 0;
+  const lacunarity = record.lacunarity ?? 0;
+  const connectivity = record.connectivity ?? 0;
+
+  const binaryB64 = record.binaryB64 || record.binary_b64 || null;
+  const skeletonB64 = record.skeletonB64 || record.skeleton_b64 || null;
+  const overlayB64 = record.overlayB64 || record.overlay_b64 || null;
+  const createdAt = record.createdAt || record.created_at || new Date().toISOString();
+
   await run(
     `INSERT INTO analysis_records (
       researcher_email, researcher_name, institution, role,
       vessel_density, branch_points, vessel_segments, total_length,
-      avg_width, endpoints, lacunarity, connectivity, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      avg_width, endpoints, lacunarity, connectivity,
+      binary_b64, skeleton_b64, overlay_b64, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      record.researcherEmail || 'sanjay@biomed.org',
-      record.researcherName || 'Sanjay Grs',
-      record.institution || 'Biomedical Institute',
-      record.role || 'Researcher',
-      record.vesselDensity,
-      record.branchPoints,
-      record.vesselSegments,
-      record.totalLength,
-      record.avgWidth,
-      record.endpoints,
-      record.lacunarity,
-      record.connectivity,
-      record.createdAt || new Date().toISOString()
+      researcherEmail,
+      researcherName,
+      institution,
+      role,
+      vesselDensity,
+      branchPoints,
+      vesselSegments,
+      totalLength,
+      avgWidth,
+      endpoints,
+      lacunarity,
+      connectivity,
+      binaryB64,
+      skeletonB64,
+      overlayB64,
+      createdAt
     ]
   );
+
+  const rowIdResult = query(`SELECT last_insert_rowid() as id`);
+  const lastId = rowIdResult[0]?.id || 1;
+  return lastId;
 }
 
 export async function getAnalysisRecords(email = null) {
@@ -158,4 +221,9 @@ export async function getAnalysisRecords(email = null) {
     return query(`SELECT * FROM analysis_records WHERE researcher_email = ? ORDER BY id DESC`, [email]);
   }
   return query(`SELECT * FROM analysis_records ORDER BY id DESC`);
+}
+
+export async function deleteAnalysisRecord(id) {
+  if (!db) await initDb();
+  await run(`DELETE FROM analysis_records WHERE id = ?`, [id]);
 }

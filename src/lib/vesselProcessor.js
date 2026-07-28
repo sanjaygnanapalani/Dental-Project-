@@ -4,11 +4,55 @@
  */
 
 /**
- * Main process function taking an image source (HTMLImageElement / Image / Canvas / File) and sensitivity
+ * Asynchronously loads an image source (dataURL string, URL string, HTMLImageElement, HTMLCanvasElement)
+ */
+function loadImage(source) {
+  return new Promise((resolve, reject) => {
+    if (!source) {
+      reject(new Error('No image source provided to vesselProcessor'));
+      return;
+    }
+
+    if (typeof HTMLCanvasElement !== 'undefined' && source instanceof HTMLCanvasElement) {
+      resolve(source);
+      return;
+    }
+
+    if (typeof HTMLImageElement !== 'undefined' && source instanceof HTMLImageElement) {
+      if (source.complete && source.naturalWidth > 0) {
+        resolve(source);
+      } else {
+        const imgCopy = new Image();
+        imgCopy.crossOrigin = 'anonymous';
+        imgCopy.onload = () => resolve(imgCopy);
+        imgCopy.onerror = (err) => reject(new Error('Failed to load image element'));
+        imgCopy.src = source.src;
+      }
+      return;
+    }
+
+    if (typeof source === 'string') {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => resolve(img);
+      img.onerror = (err) => reject(new Error('Failed to load image from string URL/DataURL'));
+      img.src = source;
+      return;
+    }
+
+    reject(new Error('Unsupported image source type'));
+  });
+}
+
+/**
+ * Main process function taking an image source (HTMLImageElement / Image / Canvas / File / DataURL) and sensitivity
  */
 export async function processVesselImage(imageSource, sensitivity = 120) {
+  // Step 0: Ensure imageSource is converted to a loaded Image or Canvas element
+  const loadedImage = await loadImage(imageSource);
+
   // Step 1: Downscale image if needed (max dimension 400px preserving aspect ratio)
-  const { canvas: inputCanvas, ctx, width, height } = prepareCanvas(imageSource, 400);
+  const { canvas: inputCanvas, ctx, width, height } = prepareCanvas(loadedImage, 400);
   const imgData = ctx.getImageData(0, 0, width, height);
   const pixels = imgData.data;
 
@@ -130,8 +174,8 @@ export async function processVesselImage(imageSource, sensitivity = 120) {
  * Prepare Canvas downscaled to maxDimension
  */
 function prepareCanvas(imageSource, maxDimension) {
-  let origWidth = imageSource.naturalWidth || imageSource.width;
-  let origHeight = imageSource.naturalHeight || imageSource.height;
+  let origWidth = imageSource.naturalWidth || imageSource.width || 400;
+  let origHeight = imageSource.naturalHeight || imageSource.height || 400;
 
   let width = origWidth;
   let height = origHeight;
@@ -147,12 +191,12 @@ function prepareCanvas(imageSource, maxDimension) {
   }
 
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = Math.max(1, width);
+  canvas.height = Math.max(1, height);
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(imageSource, 0, 0, width, height);
+  ctx.drawImage(imageSource, 0, 0, canvas.width, canvas.height);
 
-  return { canvas, ctx, width, height };
+  return { canvas, ctx, width: canvas.width, height: canvas.height };
 }
 
 /**
@@ -224,114 +268,119 @@ function morphDilate(binary, width, height) {
 }
 
 function morphOpening(binary, width, height) {
-  return morphDilate(morphErode(binary, width, height), width, height);
+  const eroded = morphErode(binary, width, height);
+  return morphDilate(eroded, width, height);
 }
 
 function morphClosing(binary, width, height) {
-  return morphErode(morphDilate(binary, width, height), width, height);
+  const dilated = morphDilate(binary, width, height);
+  return morphErode(dilated, width, height);
 }
 
 /**
- * Zhang-Suen Thinning Algorithm
+ * Zhang-Suen Thinning Algorithm (Iterative 2-Pass)
  */
 function zhangSuenThinning(binary, width, height) {
-  const grid = new Uint8Array(binary);
-  let changed = true;
+  let skeleton = new Uint8Array(binary);
+  let changing = true;
 
-  while (changed) {
-    changed = false;
+  while (changing) {
+    changing = false;
 
     // Pass 1
-    const toRemove1 = [];
+    let toRemove = [];
     for (let y = 1; y < height - 1; y++) {
       for (let x = 1; x < width - 1; x++) {
         const idx = y * width + x;
-        if (grid[idx] !== 1) continue;
+        if (skeleton[idx] !== 1) continue;
 
-        const p2 = grid[(y - 1) * width + x];
-        const p3 = grid[(y - 1) * width + (x + 1)];
-        const p4 = grid[y * width + (x + 1)];
-        const p5 = grid[(y + 1) * width + (x + 1)];
-        const p6 = grid[(y + 1) * width + x];
-        const p7 = grid[(y + 1) * width + (x - 1)];
-        const p8 = grid[y * width + (x - 1)];
-        const p9 = grid[(y - 1) * width + (x - 1)];
+        const p2 = skeleton[(y - 1) * width + x];
+        const p3 = skeleton[(y - 1) * width + (x + 1)];
+        const p4 = skeleton[y * width + (x + 1)];
+        const p5 = skeleton[(y + 1) * width + (x + 1)];
+        const p6 = skeleton[(y + 1) * width + x];
+        const p7 = skeleton[(y + 1) * width + (x - 1)];
+        const p8 = skeleton[y * width + (x - 1)];
+        const p9 = skeleton[(y - 1) * width + (x - 1)];
 
         const B = p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
         if (B < 2 || B > 6) continue;
 
-        const A = (p2 === 0 && p3 === 1 ? 1 : 0) +
-                  (p3 === 0 && p4 === 1 ? 1 : 0) +
-                  (p4 === 0 && p5 === 1 ? 1 : 0) +
-                  (p5 === 0 && p6 === 1 ? 1 : 0) +
-                  (p6 === 0 && p7 === 1 ? 1 : 0) +
-                  (p7 === 0 && p8 === 1 ? 1 : 0) +
-                  (p8 === 0 && p9 === 1 ? 1 : 0) +
-                  (p9 === 0 && p2 === 1 ? 1 : 0);
+        let A = 0;
+        if (p2 === 0 && p3 === 1) A++;
+        if (p3 === 0 && p4 === 1) A++;
+        if (p4 === 0 && p5 === 1) A++;
+        if (p5 === 0 && p6 === 1) A++;
+        if (p6 === 0 && p7 === 1) A++;
+        if (p7 === 0 && p8 === 1) A++;
+        if (p8 === 0 && p9 === 1) A++;
+        if (p9 === 0 && p2 === 1) A++;
 
         if (A !== 1) continue;
 
         if (p2 * p4 * p6 !== 0) continue;
         if (p4 * p6 * p8 !== 0) continue;
 
-        toRemove1.push(idx);
+        toRemove.push(idx);
       }
     }
 
-    for (let i = 0; i < toRemove1.length; i++) {
-      grid[toRemove1[i]] = 0;
-      changed = true;
+    if (toRemove.length > 0) {
+      changing = true;
+      for (let i = 0; i < toRemove.length; i++) {
+        skeleton[toRemove[i]] = 0;
+      }
     }
 
     // Pass 2
-    const toRemove2 = [];
+    toRemove = [];
     for (let y = 1; y < height - 1; y++) {
       for (let x = 1; x < width - 1; x++) {
         const idx = y * width + x;
-        if (grid[idx] !== 1) continue;
+        if (skeleton[idx] !== 1) continue;
 
-        const p2 = grid[(y - 1) * width + x];
-        const p3 = grid[(y - 1) * width + (x + 1)];
-        const p4 = grid[y * width + (x + 1)];
-        const p5 = grid[(y + 1) * width + (x + 1)];
-        const p6 = grid[(y + 1) * width + x];
-        const p7 = grid[(y + 1) * width + (x - 1)];
-        const p8 = grid[y * width + (x - 1)];
-        const p9 = grid[(y - 1) * width + (x - 1)];
+        const p2 = skeleton[(y - 1) * width + x];
+        const p3 = skeleton[(y - 1) * width + (x + 1)];
+        const p4 = skeleton[y * width + (x + 1)];
+        const p5 = skeleton[(y + 1) * width + (x + 1)];
+        const p6 = skeleton[(y + 1) * width + x];
+        const p7 = skeleton[(y + 1) * width + (x - 1)];
+        const p8 = skeleton[y * width + (x - 1)];
+        const p9 = skeleton[(y - 1) * width + (x - 1)];
 
         const B = p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
         if (B < 2 || B > 6) continue;
 
-        const A = (p2 === 0 && p3 === 1 ? 1 : 0) +
-                  (p3 === 0 && p4 === 1 ? 1 : 0) +
-                  (p4 === 0 && p5 === 1 ? 1 : 0) +
-                  (p5 === 0 && p6 === 1 ? 1 : 0) +
-                  (p6 === 0 && p7 === 1 ? 1 : 0) +
-                  (p7 === 0 && p8 === 1 ? 1 : 0) +
-                  (p8 === 0 && p9 === 1 ? 1 : 0) +
-                  (p9 === 0 && p2 === 1 ? 1 : 0);
+        let A = 0;
+        if (p2 === 0 && p3 === 1) A++;
+        if (p3 === 0 && p4 === 1) A++;
+        if (p4 === 0 && p5 === 1) A++;
+        if (p5 === 0 && p6 === 1) A++;
+        if (p6 === 0 && p7 === 1) A++;
+        if (p7 === 0 && p8 === 1) A++;
+        if (p8 === 0 && p9 === 1) A++;
+        if (p9 === 0 && p2 === 1) A++;
 
         if (A !== 1) continue;
 
         if (p2 * p4 * p8 !== 0) continue;
         if (p2 * p6 * p8 !== 0) continue;
 
-        toRemove2.push(idx);
+        toRemove.push(idx);
       }
     }
 
-    for (let i = 0; i < toRemove2.length; i++) {
-      grid[toRemove2[i]] = 0;
-      changed = true;
+    if (toRemove.length > 0) {
+      changing = true;
+      for (let i = 0; i < toRemove.length; i++) {
+        skeleton[toRemove[i]] = 0;
+      }
     }
   }
 
-  return grid;
+  return skeleton;
 }
 
-/**
- * 8-Neighbor Skeleton Counter
- */
 function countSkeletonNeighbors(skeleton, x, y, width) {
   let count = 0;
   for (let dy = -1; dy <= 1; dy++) {
@@ -345,10 +394,7 @@ function countSkeletonNeighbors(skeleton, x, y, width) {
   return count;
 }
 
-/**
- * Cluster points within a specified pixel radius
- */
-function clusterPoints(points, maxDistance) {
+function clusterPoints(points, radius = 5) {
   const clusters = [];
   const visited = new Set();
 
@@ -364,7 +410,7 @@ function clusterPoints(points, maxDistance) {
       if (visited.has(j)) continue;
       const dx = points[i].x - points[j].x;
       const dy = points[i].y - points[j].y;
-      if (Math.sqrt(dx * dx + dy * dy) <= maxDistance) {
+      if (dx * dx + dy * dy <= radius * radius) {
         visited.add(j);
         sumX += points[j].x;
         sumY += points[j].y;
@@ -381,26 +427,23 @@ function clusterPoints(points, maxDistance) {
   return clusters;
 }
 
-/**
- * Count Connected Components on Skeleton (BFS Flood fill)
- */
 function countConnectedComponents(skeleton, width, height) {
   const visited = new Uint8Array(width * height);
   let count = 0;
 
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
+  for (let y = 1; y < height - 1; y++) {
+    for (let x = 1; x < width - 1; x++) {
       const idx = y * width + x;
       if (skeleton[idx] === 1 && visited[idx] === 0) {
         count++;
-        // BFS
+        // BFS / DFS flood fill
         const queue = [idx];
         visited[idx] = 1;
 
         while (queue.length > 0) {
-          const curr = queue.shift();
-          const cx = curr % width;
-          const cy = Math.floor(curr / width);
+          const current = queue.pop();
+          const cx = current % width;
+          const cy = Math.floor(current / width);
 
           for (let dy = -1; dy <= 1; dy++) {
             for (let dx = -1; dx <= 1; dx++) {
@@ -424,58 +467,50 @@ function countConnectedComponents(skeleton, width, height) {
   return count;
 }
 
-/**
- * Calculate Lacunarity over binary matrix using sliding box counting
- */
-function calculateLacunarity(binary, width, height, boxSize = 32, step = 16) {
+function calculateLacunarity(binary, width, height, boxSize = 32, stride = 16) {
   const counts = [];
-  for (let y = 0; y <= height - boxSize; y += step) {
-    for (let x = 0; x <= width - boxSize; x += step) {
-      let boxFg = 0;
+  for (let y = 0; y <= height - boxSize; y += stride) {
+    for (let x = 0; x <= width - boxSize; x += stride) {
+      let boxSum = 0;
       for (let by = 0; by < boxSize; by++) {
         for (let bx = 0; bx < boxSize; bx++) {
-          if (binary[(y + by) * width + (x + bx)] === 1) {
-            boxFg++;
-          }
+          if (binary[(y + by) * width + (x + bx)] === 1) boxSum++;
         }
       }
-      counts.push(boxFg);
+      counts.push(boxSum);
     }
   }
 
   if (counts.length === 0) return 1.0;
 
-  const mean = counts.reduce((acc, v) => acc + v, 0) / counts.length;
-  const variance = counts.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / counts.length;
+  const mean = counts.reduce((a, b) => a + b, 0) / counts.length;
+  if (mean === 0) return 1.0;
 
-  const lac = (variance / (Math.pow(mean, 2) + 1e-6)) + 1;
-  return Number(lac.toFixed(2));
+  const variance = counts.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / counts.length;
+  const lacunarity = 1.0 + (variance / (mean * mean));
+  return Number(lacunarity.toFixed(3));
 }
 
-/**
- * Canvas Renderer: Binary Mask (Teal on Dark)
- */
 function renderBinaryMask(binary, width, height) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
-
   const imgData = ctx.createImageData(width, height);
   const data = imgData.data;
 
   for (let i = 0; i < binary.length; i++) {
-    const p = i * 4;
+    const idx = i * 4;
     if (binary[i] === 1) {
-      data[p] = 0;       // R
-      data[p + 1] = 212; // G (#00D4AA)
-      data[p + 2] = 170; // B
-      data[p + 3] = 255; // A
+      data[idx] = 0;       // R
+      data[idx + 1] = 212; // G (#00D4AA)
+      data[idx + 2] = 170; // B
+      data[idx + 3] = 255; // A
     } else {
-      data[p] = 20;      // R (#14191A dark)
-      data[p + 1] = 25;  // G
-      data[p + 2] = 26;  // B
-      data[p + 3] = 255;
+      data[idx] = 10;      // Dark background
+      data[idx + 1] = 14;
+      data[idx + 2] = 26;
+      data[idx + 3] = 255;
     }
   }
 
@@ -483,30 +518,26 @@ function renderBinaryMask(binary, width, height) {
   return canvas;
 }
 
-/**
- * Canvas Renderer: Skeleton (Cyan on Dark)
- */
 function renderSkeleton(skeleton, width, height) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
-
   const imgData = ctx.createImageData(width, height);
   const data = imgData.data;
 
   for (let i = 0; i < skeleton.length; i++) {
-    const p = i * 4;
+    const idx = i * 4;
     if (skeleton[i] === 1) {
-      data[p] = 0;       // R
-      data[p + 1] = 180; // G (#00B4D8 cyan)
-      data[p + 2] = 216; // B
-      data[p + 3] = 255;
+      data[idx] = 0;       // R
+      data[idx + 1] = 180; // G (#00B4D8)
+      data[idx + 2] = 216; // B
+      data[idx + 3] = 255; // A
     } else {
-      data[p] = 20;      // R (#14191A)
-      data[p + 1] = 25;
-      data[p + 2] = 26;
-      data[p + 3] = 255;
+      data[idx] = 10;
+      data[idx + 1] = 14;
+      data[idx + 2] = 26;
+      data[idx + 3] = 255;
     }
   }
 
@@ -514,9 +545,6 @@ function renderSkeleton(skeleton, width, height) {
   return canvas;
 }
 
-/**
- * Canvas Renderer: Analysis Overlay (Original + Blended Mask + Skeleton + Dots)
- */
 function renderOverlay(inputCanvas, binary, skeleton, branchPoints, endpoints, width, height) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -526,49 +554,51 @@ function renderOverlay(inputCanvas, binary, skeleton, branchPoints, endpoints, w
   // Draw original image base
   ctx.drawImage(inputCanvas, 0, 0, width, height);
 
-  const imgData = ctx.getImageData(0, 0, width, height);
-  const data = imgData.data;
+  // Tint original image
+  ctx.fillStyle = 'rgba(10, 14, 26, 0.4)';
+  ctx.fillRect(0, 0, width, height);
 
+  // Overlay vessel mask in Teal
+  const binaryImgData = ctx.getImageData(0, 0, width, height);
+  const data = binaryImgData.data;
   for (let i = 0; i < binary.length; i++) {
-    const p = i * 4;
-    const isFg = binary[i] === 1;
-    const isSkel = skeleton[i] === 1;
+    if (binary[i] === 1) {
+      const idx = i * 4;
+      data[idx] = Math.min(255, data[idx] + 0);       // Red
+      data[idx + 1] = Math.min(255, data[idx + 1] + 160); // Green (#00D4AA)
+      data[idx + 2] = Math.min(255, data[idx + 2] + 130); // Blue
+    }
+  }
+  ctx.putImageData(binaryImgData, 0, 0);
 
-    if (isSkel) {
-      // Blend 30% original + 70% Cyan (#00B4D8)
-      data[p] = Math.round(data[p] * 0.3 + 0 * 0.7);
-      data[p + 1] = Math.round(data[p + 1] * 0.3 + 180 * 0.7);
-      data[p + 2] = Math.round(data[p + 2] * 0.3 + 216 * 0.7);
-    } else if (isFg) {
-      // Blend 65% original + 35% Teal (#00D4AA)
-      data[p] = Math.round(data[p] * 0.65 + 0 * 0.35);
-      data[p + 1] = Math.round(data[p + 1] * 0.65 + 212 * 0.35);
-      data[p + 2] = Math.round(data[p + 2] * 0.65 + 170 * 0.35);
+  // Draw Skeleton in Cyan
+  for (let i = 0; i < skeleton.length; i++) {
+    if (skeleton[i] === 1) {
+      const x = i % width;
+      const y = Math.floor(i / width);
+      ctx.fillStyle = '#00B4D8';
+      ctx.fillRect(x, y, 1, 1);
     }
   }
 
-  ctx.putImageData(imgData, 0, 0);
-
-  // Draw Pink branch point circles
-  const branchRadius = Math.max(3, Math.round(width * 0.008));
-  ctx.fillStyle = '#F472B6'; // Pink
-  ctx.strokeStyle = '#FFFFFF';
-  ctx.lineWidth = 1;
-  branchPoints.forEach(bp => {
+  // Draw Branch Points in Pink
+  for (let bp of branchPoints) {
     ctx.beginPath();
-    ctx.arc(bp.x, bp.y, branchRadius, 0, 2 * Math.PI);
+    ctx.arc(bp.x, bp.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#F472B6';
     ctx.fill();
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 1;
     ctx.stroke();
-  });
+  }
 
-  // Draw Gold endpoint circles
-  const endRadius = Math.max(2, Math.round(width * 0.006));
-  ctx.fillStyle = '#FBBF24'; // Gold
-  endpoints.forEach(ep => {
+  // Draw Endpoints in Gold
+  for (let ep of endpoints) {
     ctx.beginPath();
-    ctx.arc(ep.x, ep.y, endRadius, 0, 2 * Math.PI);
+    ctx.arc(ep.x, ep.y, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#FBBF24';
     ctx.fill();
-  });
+  }
 
   return canvas;
 }

@@ -1,0 +1,40 @@
+{
+  "model_name": "AngiogenesisVesselNet",
+  "model_version": "3.2.0",
+  "frameworks": [
+    "PyTorch (angiogenesis_vessel_net.pt)",
+    "TensorFlow (angiogenesis_vessel_net.h5)"
+  ],
+  "input_shape": [
+    3,
+    500,
+    500
+  ],
+  "output_shape": {
+    "classes": 3,
+    "metrics": 8,
+    "mask": [
+      1,
+      500,
+      500
+    ]
+  },
+  "validation_accuracy": 89.76,
+  "train_accuracy": 92.24,
+  "validation_loss": 0.195,
+  "vessel_iou": 0.86,
+  "best_epoch": 10,
+  "epochs_run": 16,
+  "total_samples": 300,
+  "train_samples": 240,
+  "val_samples": 60,
+  "regularization": {
+    "spatial_dropout2d": 0.3,
+    "fc_dropout": 0.4,
+    "l2_weight_decay": 0.0001,
+    "early_stopping_patience": 6
+  },
+  "pt_model_file": "angiogenesis_vessel_net.pt",
+  "h5_model_file": "angiogenesis_vessel_net.h5",
+  "timestamp": "2026-07-27T03:29:18Z"
+}

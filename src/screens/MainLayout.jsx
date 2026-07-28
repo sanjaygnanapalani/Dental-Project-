@@ -4,7 +4,6 @@ import BottomNavBar from '../components/common/BottomNavBar';
 import HomeTab from './tabs/HomeTab';
 import AnalyzerTab from './tabs/AnalyzerTab';
 import ExploreTab from './tabs/ExploreTab';
-import ReferencesTab from './tabs/ReferencesTab';
 import ProfileTab from './tabs/ProfileTab';
 
 export default function MainLayout() {
@@ -18,8 +17,6 @@ export default function MainLayout() {
         return <AnalyzerTab />;
       case 'explore':
         return <ExploreTab />;
-      case 'references':
-        return <ReferencesTab />;
       case 'profile':
         return <ProfileTab />;
       default:
@@ -32,8 +29,9 @@ export default function MainLayout() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0E1A',
-        color: '#F8FAFC'
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <HeaderBar />

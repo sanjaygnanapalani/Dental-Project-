@@ -1,0 +1,20 @@
+{
+  "diff": true,
+  "extension": ["js"],
+  "package": "./package.json",
+  "reporter": "mochawesome",
+  "reporter-option": [
+    "reportDir=reports/mochawesome",
+    "reportFilename=E2E_Test_Report",
+    "quiet=false",
+    "json=true",
+    "html=true",
+    "charts=true",
+    "overwrite=true",
+    "reportTitle=Enterprise React E2E Automation Report"
+  ],
+  "require": ["tests/setup/BaseTest.js"],
+  "slow": 7500,
+  "timeout": 60000,
+  "ui": "bdd"
+}

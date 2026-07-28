@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DnaAnimation from '../components/common/DnaAnimation';
 import MetricCard from '../components/common/MetricCard';
-import { ArrowLeft, GitBranch, Network, BarChart3, Pill, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, GitBranch, Network, BarChart3, Pill, CheckCircle2 } from 'lucide-react';
 
 const TOPIC_DETAILS = {
   vessel_sprouting: {
@@ -11,9 +11,9 @@ const TOPIC_DETAILS = {
     icon: GitBranch,
     heroText: 'Endothelial tip cells lead angiogenic vessel sprouts toward hypoxic tissue gradients by extending long, motile filopodia enriched with VEGF Receptor-2 (VEGFR2).',
     stats: [
-      { label: 'Tip Migration Speed', value: '14.2', unit: 'µm/hr', color: '#00D4AA' },
-      { label: 'Filopodia Radius', value: '450', unit: 'nm', color: '#00B4D8' },
-      { label: 'Gradient Sensitivity', value: '0.85', unit: 'idx', color: '#F472B6' }
+      { label: 'Tip Migration Speed', value: '14.2', unit: 'µm/hr', color: 'var(--teal-accent)' },
+      { label: 'Filopodia Radius', value: '450', unit: 'nm', color: 'var(--cyan-accent)' },
+      { label: 'Gradient Sensitivity', value: '0.85', unit: 'idx', color: 'var(--pink-accent)' }
     ],
     sections: [
       {
@@ -32,9 +32,9 @@ const TOPIC_DETAILS = {
     icon: Network,
     heroText: 'Vessel anastomosis occurs when two independent sprouting tip cells meet, adhere, and fuse their luminal membranes to establish a functional continuous microcirculatory loop.',
     stats: [
-      { label: 'Anastomosis Time', value: '6.4', unit: 'hrs', color: '#00B4D8' },
-      { label: 'Pericyte Coverage', value: '78.5', unit: '%', color: '#10B981' },
-      { label: 'Branching Stability', value: '92.0', unit: '%', color: '#FBBF24' }
+      { label: 'Anastomosis Time', value: '6.4', unit: 'hrs', color: 'var(--cyan-accent)' },
+      { label: 'Pericyte Coverage', value: '78.5', unit: '%', color: 'var(--success-green)' },
+      { label: 'Branching Stability', value: '92.0', unit: '%', color: 'var(--gold-accent)' }
     ],
     sections: [
       {
@@ -53,9 +53,9 @@ const TOPIC_DETAILS = {
     icon: BarChart3,
     heroText: 'Precise automated image segmentation measures microvascular density, branch point distribution, and structural lacunarity to objectively evaluate PLGA biomaterial performance.',
     stats: [
-      { label: 'Algorithm Convergence', value: '< 150', unit: 'ms', color: '#00D4AA' },
-      { label: 'Skeleton Precision', value: '99.4', unit: '%', color: '#F472B6' },
-      { label: 'Connectivity Index', value: '88.6', unit: '%', color: '#00B4D8' }
+      { label: 'Algorithm Convergence', value: '< 150', unit: 'ms', color: 'var(--teal-accent)' },
+      { label: 'Skeleton Precision', value: '99.4', unit: '%', color: 'var(--pink-accent)' },
+      { label: 'Connectivity Index', value: '88.6', unit: '%', color: 'var(--cyan-accent)' }
     ],
     sections: [
       {
@@ -74,9 +74,9 @@ const TOPIC_DETAILS = {
     icon: Pill,
     heroText: 'Controlled growth factor release from bio-resorbable PLGA microspheres restores microvascular perfusion in ischemic cardiac, neural, and diabetic limb pathologies.',
     stats: [
-      { label: 'Perfusion Recovery', value: '340', unit: '%', color: '#10B981' },
-      { label: 'Necrosis Reduction', value: '64.5', unit: '%', color: '#00D4AA' },
-      { label: 'Tissue Viability', value: '95.2', unit: '%', color: '#FBBF24' }
+      { label: 'Perfusion Recovery', value: '340', unit: '%', color: 'var(--success-green)' },
+      { label: 'Necrosis Reduction', value: '64.5', unit: '%', color: 'var(--teal-accent)' },
+      { label: 'Tissue Viability', value: '95.2', unit: '%', color: 'var(--gold-accent)' }
     ],
     sections: [
       {
@@ -103,9 +103,10 @@ export default function TopicDetailScreen() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0E1A',
-        color: '#F8FAFC',
-        padding: '24px 20px 60px'
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
+        padding: '24px 20px 60px',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <DnaAnimation opacity={0.3} />
@@ -115,9 +116,9 @@ export default function TopicDetailScreen() {
         <button
           onClick={() => navigate('/main')}
           style={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(0, 212, 170, 0.3)',
-            color: '#00D4AA',
+            background: 'var(--input-bg)',
+            border: '1px solid var(--teal-accent)',
+            color: 'var(--teal-accent)',
             padding: '8px 16px',
             borderRadius: '10px',
             cursor: 'pointer',
@@ -139,7 +140,7 @@ export default function TopicDetailScreen() {
           style={{
             padding: '32px 28px',
             marginBottom: '28px',
-            borderLeft: '4px solid #00D4AA'
+            borderLeft: '4px solid var(--teal-accent)'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '14px' }}>
@@ -149,7 +150,7 @@ export default function TopicDetailScreen() {
                 height: '48px',
                 borderRadius: '14px',
                 backgroundColor: 'rgba(0, 212, 170, 0.15)',
-                color: '#00D4AA',
+                color: 'var(--teal-accent)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
@@ -159,13 +160,13 @@ export default function TopicDetailScreen() {
             </div>
             <div>
               <span className="section-label">{topic.subtitle}</span>
-              <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#F8FAFC' }}>
+              <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {topic.title}
               </h1>
             </div>
           </div>
 
-          <p style={{ fontSize: '1rem', color: '#94A3B8', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             {topic.heroText}
           </p>
         </div>
@@ -182,12 +183,12 @@ export default function TopicDetailScreen() {
           {topic.sections.map((sec, idx) => (
             <div key={idx} className="glass-card" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                <CheckCircle2 size={20} color="#00D4AA" />
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#F8FAFC' }}>
+                <CheckCircle2 size={20} color="var(--teal-accent)" />
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                   {sec.heading}
                 </h3>
               </div>
-              <p style={{ fontSize: '0.92rem', color: '#94A3B8', lineHeight: 1.6 }}>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                 {sec.text}
               </p>
             </div>

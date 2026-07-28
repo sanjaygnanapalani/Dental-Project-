@@ -1,0 +1,34 @@
+{
+  "validUser": {
+    "username": "qa_admin@example.com",
+    "password": "Password123!",
+    "name": "QA Enterprise Admin",
+    "phone": "9876543210"
+  },
+  "invalidUsers": [
+    {
+      "scenario": "Empty username",
+      "username": "",
+      "password": "Password123!",
+      "expectedError": "Username is required"
+    },
+    {
+      "scenario": "Empty password",
+      "username": "qa_admin@example.com",
+      "password": "",
+      "expectedError": "Password is required"
+    },
+    {
+      "scenario": "Invalid credentials",
+      "username": "invalid_user@example.com",
+      "password": "WrongPassword999",
+      "expectedError": "Invalid credentials"
+    }
+  ],
+  "formValidation": {
+    "invalidEmails": ["plainaddress", "@domain.com", "user@domain", "user@.com"],
+    "invalidPhones": ["123", "abcdefghij", "1234567890123456"],
+    "shortPasswords": ["123", "abc", "pass"],
+    "specialChars": ["<script>alert('xss')</script>", "' OR 1=1 --", "admin\";--"]
+  }
+}

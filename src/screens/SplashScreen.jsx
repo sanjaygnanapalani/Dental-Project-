@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DnaAnimation from '../components/common/DnaAnimation';
-import { Activity } from 'lucide-react';
+import AppLogo from '../components/common/AppLogo';
 
 export default function SplashScreen() {
   const navigate = useNavigate();
@@ -26,12 +26,14 @@ export default function SplashScreen() {
         position: 'relative',
         width: '100vw',
         height: '100vh',
-        backgroundColor: '#0A0E1A',
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <DnaAnimation opacity={0.85} />
@@ -47,20 +49,8 @@ export default function SplashScreen() {
           padding: '24px'
         }}
       >
-        <div
-          style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '24px',
-            background: 'linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 40px rgba(0, 212, 170, 0.5)'
-          }}
-        >
-          <Activity size={48} color="#0A0E1A" strokeWidth={2.5} />
-        </div>
+        {/* Brand App Logo */}
+        <AppLogo size={88} iconSize={52} borderRadius={26} />
 
         <div>
           <h1
@@ -77,8 +67,8 @@ export default function SplashScreen() {
           <p
             style={{
               fontSize: '1rem',
-              color: '#94A3B8',
-              letterSpacing: '0.05em',
+              color: 'var(--text-secondary)',
+              letterSpacing: '0.06em',
               textTransform: 'uppercase',
               fontWeight: 600
             }}
@@ -88,9 +78,9 @@ export default function SplashScreen() {
         </div>
 
         <div style={{ marginTop: '24px', display: 'flex', gap: '8px' }}>
-          <div className="pulse-dot" style={{ backgroundColor: '#00D4AA' }} />
-          <div className="pulse-dot" style={{ backgroundColor: '#00B4D8', animationDelay: '0.3s' }} />
-          <div className="pulse-dot" style={{ backgroundColor: '#F472B6', animationDelay: '0.6s' }} />
+          <div className="pulse-dot" style={{ backgroundColor: 'var(--teal-accent)' }} />
+          <div className="pulse-dot" style={{ backgroundColor: 'var(--cyan-accent)', animationDelay: '0.3s' }} />
+          <div className="pulse-dot" style={{ backgroundColor: 'var(--pink-accent)', animationDelay: '0.6s' }} />
         </div>
       </div>
     </div>

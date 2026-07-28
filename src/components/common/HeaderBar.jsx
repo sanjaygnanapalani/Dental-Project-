@@ -1,7 +1,8 @@
 import React from 'react';
-import { LogOut, Activity } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import AppLogo from './AppLogo';
 
 export default function HeaderBar() {
   const { session, logout } = useAuth();
@@ -12,7 +13,6 @@ export default function HeaderBar() {
     navigate('/login');
   };
 
-  // Format display name nicely if email prefix was used
   const rawName = `${session.firstName || ''} ${session.lastName || ''}`.trim();
   const displayName = rawName.includes('researcher.google') ? 'Google Researcher' : (rawName || 'Researcher');
   const initials = displayName
@@ -30,46 +30,21 @@ export default function HeaderBar() {
         left: 0,
         right: 0,
         height: '68px',
-        backgroundColor: 'rgba(10, 14, 26, 0.9)',
+        backgroundColor: 'var(--glass-bg)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid rgba(0, 212, 170, 0.2)',
+        borderBottom: '1px solid var(--glass-border)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 24px',
         zIndex: 90,
-        gap: '16px'
+        gap: '16px',
+        transition: 'background-color 0.3s ease, border-color 0.3s ease'
       }}
     >
-      {/* Brand Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-        <div
-          style={{
-            width: '38px',
-            height: '38px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(0, 212, 170, 0.4)'
-          }}
-        >
-          <Activity size={22} color="#0A0E1A" strokeWidth={2.5} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span
-            className="gradient-text"
-            style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}
-          >
-            PLGA Vascular
-          </span>
-          <span style={{ fontSize: '0.65rem', color: '#94A3B8', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 700 }}>
-            Microvascular Analyzer
-          </span>
-        </div>
-      </div>
+      {/* Brand Logo Component */}
+      <AppLogo size={38} iconSize={22} borderRadius={12} showText={true} titleSize="1.2rem" />
 
       {/* User Info & Actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexShrink: 1, minWidth: 0 }}>
@@ -78,82 +53,77 @@ export default function HeaderBar() {
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            backgroundColor: 'rgba(15, 23, 42, 0.7)',
-            border: '1px solid rgba(0, 212, 170, 0.2)',
-            padding: '6px 14px 6px 8px',
+            padding: '6px 14px',
             borderRadius: '999px',
-            maxWidth: '260px'
+            backgroundColor: 'var(--input-bg)',
+            border: '1px solid var(--glass-border)',
+            minWidth: 0,
+            overflow: 'hidden'
           }}
         >
           <div
             style={{
-              width: '32px',
-              height: '32px',
+              width: '28px',
+              height: '28px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #00D4AA 0%, #00B4D8 100%)',
-              color: '#0A0E1A',
-              fontWeight: 800,
-              fontSize: '0.8rem',
+              background: 'linear-gradient(135deg, var(--teal-accent) 0%, var(--cyan-accent) 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              fontSize: '0.75rem',
+              fontWeight: 800,
+              color: '#0A0E1A',
               flexShrink: 0
             }}
           >
             {initials}
           </div>
-
-          <div style={{ overflow: 'hidden', minWidth: 0, textAlign: 'left' }}>
-            <div
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            <span
               style={{
                 fontSize: '0.82rem',
                 fontWeight: 700,
-                color: '#F8FAFC',
-                whiteSpace: 'nowrap',
+                color: 'var(--pure-white)',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
               }}
             >
               {displayName}
-            </div>
-            <div
+            </span>
+            <span
               style={{
                 fontSize: '0.68rem',
-                color: '#00D4AA',
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
+                color: 'var(--muted-white)',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
               }}
             >
               {session.institution || 'Biomedical Institute'}
-            </div>
+            </span>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          title="Log Out"
+          title="Sign Out"
           style={{
-            background: 'rgba(239, 68, 68, 0.12)',
-            border: '1px solid rgba(239, 68, 68, 0.35)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '10px',
+            backgroundColor: 'rgba(239, 68, 68, 0.12)',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
             color: '#EF4444',
-            borderRadius: '12px',
-            width: '38px',
-            height: '38px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            flexShrink: 0
+            flexShrink: 0,
+            transition: 'all 0.2s ease'
           }}
-          onMouseEnter={e => {
-            e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.12)';
-          }}
+          onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.25)'}
+          onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.12)'}
         >
           <LogOut size={18} />
         </button>

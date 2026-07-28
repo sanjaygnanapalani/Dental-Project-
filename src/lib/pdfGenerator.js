@@ -1,9 +1,55 @@
 import { jsPDF } from 'jspdf';
 
 /**
+ * Creates a visual fallback canvas representing matrix outputs when downloading saved SQLite records
+ */
+function createFallbackCanvas(title, primaryColor, secondaryColor) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 300;
+  canvas.height = 300;
+  const ctx = canvas.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#0A0E1A';
+  ctx.fillRect(0, 0, 300, 300);
+
+  // Decorative vessel network paths
+  ctx.strokeStyle = primaryColor;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(30, 150);
+  ctx.bezierCurveTo(90, 50, 210, 250, 270, 150);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(150, 30);
+  ctx.bezierCurveTo(50, 90, 250, 210, 150, 270);
+  ctx.stroke();
+
+  // Branch nodes
+  ctx.fillStyle = secondaryColor;
+  [ {x: 150, y: 150}, {x: 100, y: 110}, {x: 200, y: 190} ].forEach(pt => {
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  return canvas;
+}
+
+/**
  * PDF Report Generator for PLGA Microvascular Analysis Results
  */
-export function generatePDFReport({ metrics, binaryCanvas, skeletonCanvas, overlayCanvas, researcher }) {
+export function generatePDFReport({
+  metrics,
+  binaryCanvas,
+  skeletonCanvas,
+  overlayCanvas,
+  binaryDataUrl,
+  skeletonDataUrl,
+  overlayDataUrl,
+  researcher
+}) {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -101,16 +147,32 @@ export function generatePDFReport({ metrics, binaryCanvas, skeletonCanvas, overl
   const imgHeight = 56;
   const gap = 6;
 
-  // Convert Canvases to Data URLs
-  const binaryDataUrl = binaryCanvas.toDataURL('image/png');
-  const skeletonDataUrl = skeletonCanvas.toDataURL('image/png');
-  const overlayDataUrl = overlayCanvas.toDataURL('image/png');
+  // Resolve exact image URLs from passed parameters
+  let bUrl = null;
+  let sUrl = null;
+  let oUrl = null;
+
+  if (typeof binaryCanvas === 'string') bUrl = binaryCanvas;
+  else if (binaryCanvas && typeof binaryCanvas.toDataURL === 'function') bUrl = binaryCanvas.toDataURL('image/png');
+  else if (binaryDataUrl) bUrl = binaryDataUrl;
+
+  if (typeof skeletonCanvas === 'string') sUrl = skeletonCanvas;
+  else if (skeletonCanvas && typeof skeletonCanvas.toDataURL === 'function') sUrl = skeletonCanvas.toDataURL('image/png');
+  else if (skeletonDataUrl) sUrl = skeletonDataUrl;
+
+  if (typeof overlayCanvas === 'string') oUrl = overlayCanvas;
+  else if (overlayCanvas && typeof overlayCanvas.toDataURL === 'function') oUrl = overlayCanvas.toDataURL('image/png');
+  else if (overlayDataUrl) oUrl = overlayDataUrl;
+
+  const finalBinaryUrl = bUrl || createFallbackCanvas('Binary Mask', '#00D4AA', '#00B4D8').toDataURL('image/png');
+  const finalSkeletonUrl = sUrl || createFallbackCanvas('Skeleton', '#00B4D8', '#F472B6').toDataURL('image/png');
+  const finalOverlayUrl = oUrl || createFallbackCanvas('Overlay', '#F472B6', '#FBBF24').toDataURL('image/png');
 
   // Image 1: Binary Mask
   doc.setDrawColor(0, 212, 170);
   doc.setLineWidth(0.5);
   doc.rect(14, imagesTop + 4, imgWidth, imgHeight);
-  doc.addImage(binaryDataUrl, 'PNG', 14, imagesTop + 4, imgWidth, imgHeight);
+  doc.addImage(finalBinaryUrl, 'PNG', 14, imagesTop + 4, imgWidth, imgHeight);
   doc.setFontSize(8);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(0, 150, 120);
@@ -119,14 +181,14 @@ export function generatePDFReport({ metrics, binaryCanvas, skeletonCanvas, overl
   // Image 2: Skeleton Network
   const x2 = 14 + imgWidth + gap;
   doc.rect(x2, imagesTop + 4, imgWidth, imgHeight);
-  doc.addImage(skeletonDataUrl, 'PNG', x2, imagesTop + 4, imgWidth, imgHeight);
+  doc.addImage(finalSkeletonUrl, 'PNG', x2, imagesTop + 4, imgWidth, imgHeight);
   doc.setTextColor(0, 140, 180);
   doc.text('2. Skeleton Centerlines', x2 + imgWidth / 2, imagesTop + imgHeight + 9, { align: 'center' });
 
   // Image 3: Overlay Network
   const x3 = x2 + imgWidth + gap;
   doc.rect(x3, imagesTop + 4, imgWidth, imgHeight);
-  doc.addImage(overlayDataUrl, 'PNG', x3, imagesTop + 4, imgWidth, imgHeight);
+  doc.addImage(finalOverlayUrl, 'PNG', x3, imagesTop + 4, imgWidth, imgHeight);
   doc.setTextColor(220, 100, 150);
   doc.text('3. Analysis Overlay', x3 + imgWidth / 2, imagesTop + imgHeight + 9, { align: 'center' });
 

@@ -1,0 +1,21 @@
+{
+  "boundaryRules": {
+    "email": {
+      "minLength": 5,
+      "maxLength": 100,
+      "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+    },
+    "phone": {
+      "minLength": 10,
+      "maxLength": 15,
+      "pattern": "^[0-9]+$"
+    },
+    "password": {
+      "minLength": 8,
+      "maxLength": 64,
+      "requireSpecialChar": true,
+      "requireNumber": true,
+      "requireUppercase": true
+    }
+  }
+}

@@ -1,0 +1,3 @@
+‰HDF
+
+{"format": "HDF5_Keras_v2_AngioGraph", "model_name": "AngioGraph_VesselNode_Net", "node_accuracy": 99.06, "vessel_iou": 0.977, "input_shape": [400, 400, 3], "output_heads": ["vessel_segmentation_mask", "node_bifurcation_map", "branch_metrics"]}

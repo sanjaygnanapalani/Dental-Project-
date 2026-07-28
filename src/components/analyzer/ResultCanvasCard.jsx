@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function ResultCanvasCard({ title, subtitle, sourceCanvas, accentColor = '#00D4AA', legendLabel }) {
+export default function ResultCanvasCard({ title, subtitle, sourceCanvas, accentColor = 'var(--teal-accent)', legendLabel }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
     if (!sourceCanvas || !containerRef.current) return;
 
     containerRef.current.innerHTML = '';
-    
+
     // Clone canvas content
     const canvasCopy = document.createElement('canvas');
     canvasCopy.width = sourceCanvas.width;
@@ -36,11 +36,11 @@ export default function ResultCanvasCard({ title, subtitle, sourceCanvas, accent
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#F8FAFC' }}>
+          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>
             {title}
           </h4>
           {subtitle && (
-            <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
               {subtitle}
             </span>
           )}
@@ -52,9 +52,9 @@ export default function ResultCanvasCard({ title, subtitle, sourceCanvas, accent
               fontWeight: 700,
               padding: '2px 8px',
               borderRadius: '999px',
-              backgroundColor: `${accentColor}22`,
+              backgroundColor: 'rgba(0, 212, 170, 0.15)',
               color: accentColor,
-              border: `1px solid ${accentColor}44`
+              border: `1px solid rgba(0, 212, 170, 0.3)`
             }}
           >
             {legendLabel}
@@ -66,7 +66,7 @@ export default function ResultCanvasCard({ title, subtitle, sourceCanvas, accent
         ref={containerRef}
         style={{
           width: '100%',
-          backgroundColor: '#14191A',
+          backgroundColor: 'var(--input-bg)',
           borderRadius: '8px',
           overflow: 'hidden',
           minHeight: '200px',

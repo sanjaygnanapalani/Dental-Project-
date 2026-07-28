@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MetricCard({ title, value, unit = '', icon: Icon, color = '#00D4AA', description }) {
+export default function MetricCard({ title, value, unit = '', icon: Icon, color = 'var(--teal-accent)', description }) {
   return (
     <div
       className="glass-card glass-card-hover"
@@ -26,7 +26,7 @@ export default function MetricCard({ title, value, unit = '', icon: Icon, color 
       />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span className="section-label" style={{ color: '#94A3B8', fontSize: '0.7rem' }}>
+        <span className="section-label" style={{ color: 'var(--text-secondary)', fontSize: '0.7rem' }}>
           {title}
         </span>
         {Icon && (
@@ -34,7 +34,7 @@ export default function MetricCard({ title, value, unit = '', icon: Icon, color 
             style={{
               padding: '6px',
               borderRadius: '8px',
-              backgroundColor: `${color}1A`,
+              backgroundColor: 'rgba(0, 212, 170, 0.12)',
               color: color,
               display: 'flex',
               alignItems: 'center',
@@ -47,7 +47,7 @@ export default function MetricCard({ title, value, unit = '', icon: Icon, color 
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-        <span style={{ fontSize: '1.75rem', fontWeight: 800, color: '#F8FAFC', letterSpacing: '-0.03em' }}>
+        <span style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>
           {value}
         </span>
         {unit && (
@@ -58,7 +58,7 @@ export default function MetricCard({ title, value, unit = '', icon: Icon, color 
       </div>
 
       {description && (
-        <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
           {description}
         </span>
       )}

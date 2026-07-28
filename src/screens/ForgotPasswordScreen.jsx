@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import DnaAnimation from '../components/common/DnaAnimation';
+import AppLogo from '../components/common/AppLogo';
 import { ArrowLeft, Mail, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function ForgotPasswordScreen() {
@@ -25,11 +26,13 @@ export default function ForgotPasswordScreen() {
       style={{
         position: 'relative',
         minHeight: '100vh',
-        backgroundColor: '#0A0E1A',
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '24px'
+        padding: '24px',
+        transition: 'background-color 0.3s ease, color 0.3s ease'
       }}
     >
       <DnaAnimation blur={true} opacity={0.4} />
@@ -51,7 +54,7 @@ export default function ForgotPasswordScreen() {
           style={{
             background: 'none',
             border: 'none',
-            color: '#00D4AA',
+            color: 'var(--teal-accent)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
@@ -65,11 +68,15 @@ export default function ForgotPasswordScreen() {
           Back to Login
         </button>
 
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '8px 0' }}>
+          <AppLogo size={56} iconSize={30} borderRadius={16} />
+        </div>
+
         <div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#F8FAFC' }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)' }}>
             Reset Password
           </h2>
-          <p style={{ fontSize: '0.85rem', color: '#94A3B8', marginTop: '4px' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
             Enter your institutional email to receive a password reset link
           </p>
         </div>
@@ -78,7 +85,7 @@ export default function ForgotPasswordScreen() {
           <div
             style={{
               backgroundColor: 'rgba(16, 185, 129, 0.12)',
-              border: '1px solid #10B981',
+              border: '1px solid var(--success-green)',
               borderRadius: '12px',
               padding: '20px',
               textAlign: 'center',
@@ -88,12 +95,12 @@ export default function ForgotPasswordScreen() {
               gap: '12px'
             }}
           >
-            <CheckCircle2 size={36} color="#10B981" />
-            <h3 style={{ fontSize: '1.05rem', color: '#F8FAFC', fontWeight: 700 }}>
+            <CheckCircle2 size={36} color="var(--success-green)" />
+            <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700 }}>
               Reset Link Sent!
             </h3>
-            <p style={{ fontSize: '0.82rem', color: '#94A3B8', lineHeight: 1.4 }}>
-              We've dispatched password recovery instructions to <strong style={{ color: '#00D4AA' }}>{email}</strong>.
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+              We've dispatched password recovery instructions to <strong style={{ color: 'var(--teal-accent)' }}>{email}</strong>.
             </p>
             <Link to="/login" className="btn-gradient" style={{ textDecoration: 'none', marginTop: '8px', width: '100%' }}>
               Return to Sign In
@@ -102,14 +109,14 @@ export default function ForgotPasswordScreen() {
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {error && (
-              <div style={{ color: '#EF4444', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ color: 'var(--error-red)', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <AlertCircle size={15} />
                 <span>{error}</span>
               </div>
             )}
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#00D4AA', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '6px' }}>
                 RESEARCHER EMAIL ADDRESS
               </label>
               <div style={{ position: 'relative' }}>
@@ -121,7 +128,7 @@ export default function ForgotPasswordScreen() {
                   onChange={e => setEmail(e.target.value)}
                   style={{ paddingLeft: '38px' }}
                 />
-                <Mail size={16} color="#94A3B8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <Mail size={16} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
             </div>
 

@@ -29,27 +29,27 @@ export default function MetricsCharts({ metrics }) {
 
   // Bar chart data for quantitative stats comparison
   const barData = [
-    { name: 'Density (%)', val: metrics.vesselDensity, color: '#00D4AA' },
-    { name: 'Branches', val: metrics.branchPoints, color: '#F472B6' },
-    { name: 'Segments', val: metrics.vesselSegments, color: '#00B4D8' },
-    { name: 'Endpoints', val: metrics.endpoints, color: '#FBBF24' },
-    { name: 'Connect (%)', val: metrics.connectivity, color: '#10B981' }
+    { name: 'Density (%)', val: metrics.vesselDensity, color: 'var(--teal-accent)' },
+    { name: 'Branches', val: metrics.branchPoints, color: 'var(--pink-accent)' },
+    { name: 'Segments', val: metrics.vesselSegments, color: 'var(--cyan-accent)' },
+    { name: 'Endpoints', val: metrics.endpoints, color: 'var(--gold-accent)' },
+    { name: 'Connect (%)', val: metrics.connectivity, color: 'var(--success-green)' }
   ];
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginTop: '24px' }}>
       {/* Radar Chart */}
       <div className="glass-card" style={{ padding: '20px' }}>
-        <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#00D4AA', marginBottom: '14px' }}>
+        <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--teal-accent)', marginBottom: '14px' }}>
           MICROVASCULAR NETWORK RADAR PROFILE
         </h4>
         <div style={{ width: '100%', height: 260 }}>
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="75%" data={radarData}>
-              <PolarGrid stroke="rgba(255, 255, 255, 0.15)" />
-              <PolarAngleAxis dataKey="subject" stroke="#94A3B8" tick={{ fill: '#94A3B8', fontSize: 11 }} />
-              <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="rgba(255, 255, 255, 0.2)" />
-              <Radar name="Network Profile" dataKey="value" stroke="#00D4AA" fill="#00D4AA" fillOpacity={0.4} />
+              <PolarGrid stroke="var(--input-border)" />
+              <PolarAngleAxis dataKey="subject" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 11 }} />
+              <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="var(--input-border)" />
+              <Radar name="Network Profile" dataKey="value" stroke="var(--teal-accent)" fill="var(--teal-accent)" fillOpacity={0.4} />
             </RadarChart>
           </ResponsiveContainer>
         </div>
@@ -57,16 +57,16 @@ export default function MetricsCharts({ metrics }) {
 
       {/* Bar Chart */}
       <div className="glass-card" style={{ padding: '20px' }}>
-        <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#00B4D8', marginBottom: '14px' }}>
+        <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--cyan-accent)', marginBottom: '14px' }}>
           QUANTITATIVE METRIC DISTRIBUTION
         </h4>
         <div style={{ width: '100%', height: 260 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <XAxis dataKey="name" stroke="#94A3B8" tick={{ fill: '#94A3B8', fontSize: 10 }} />
-              <YAxis stroke="#94A3B8" tick={{ fill: '#94A3B8', fontSize: 10 }} />
+              <XAxis dataKey="name" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} />
+              <YAxis stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 10 }} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#0F172A', borderColor: '#00D4AA', borderRadius: '8px', color: '#F8FAFC' }}
+                contentStyle={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--teal-accent)', borderRadius: '8px', color: 'var(--text-primary)' }}
               />
               <Bar dataKey="val" radius={[6, 6, 0, 0]}>
                 {barData.map((entry, index) => (

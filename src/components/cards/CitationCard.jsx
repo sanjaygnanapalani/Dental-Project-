@@ -29,25 +29,25 @@ export default function CitationCard({ citation }) {
             padding: '2px 10px',
             borderRadius: '999px',
             backgroundColor: 'rgba(0, 212, 170, 0.15)',
-            color: '#00D4AA',
+            color: 'var(--teal-accent)',
             border: '1px solid rgba(0, 212, 170, 0.3)'
           }}
         >
           {citation.id}
         </span>
-        <span style={{ fontSize: '0.8rem', color: '#94A3B8', fontWeight: 600 }}>
+        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
           {citation.year}
         </span>
       </div>
 
       <div>
-        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#F8FAFC', lineHeight: 1.4, marginBottom: '6px' }}>
+        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4, marginBottom: '6px' }}>
           {citation.title}
         </h4>
-        <div style={{ fontSize: '0.84rem', color: '#00B4D8', fontWeight: 600, marginBottom: '4px' }}>
+        <div style={{ fontSize: '0.84rem', color: 'var(--cyan-accent)', fontWeight: 600, marginBottom: '4px' }}>
           {citation.authors}
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#64748B', fontStyle: 'italic' }}>
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
           {citation.journal}
         </div>
       </div>
@@ -56,11 +56,11 @@ export default function CitationCard({ citation }) {
         <button
           onClick={handleCopy}
           style={{
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid rgba(148, 163, 184, 0.25)',
+            background: 'var(--input-bg)',
+            border: '1px solid var(--input-border)',
             borderRadius: '8px',
             padding: '6px 12px',
-            color: copied ? '#10B981' : '#94A3B8',
+            color: copied ? 'var(--success-green)' : 'var(--text-secondary)',
             fontSize: '0.78rem',
             fontWeight: 600,
             cursor: 'pointer',
@@ -84,7 +84,7 @@ export default function CitationCard({ citation }) {
               border: '1px solid rgba(0, 180, 216, 0.3)',
               borderRadius: '8px',
               padding: '6px 12px',
-              color: '#00B4D8',
+              color: 'var(--cyan-accent)',
               fontSize: '0.78rem',
               fontWeight: 600,
               textDecoration: 'none',
