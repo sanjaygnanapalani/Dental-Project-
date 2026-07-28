@@ -16,7 +16,8 @@
     "test:dynamic": "mocha --config .mocharc.json tests/dynamic/dynamicFormDiscovery.test.js",
     "test:all": "mocha --config .mocharc.json tests/**/*.test.js",
     "test:load": "k6 run load-tests/scenarios/baselineLoadTest.js",
-    "test:load:report": "k6 run load-tests/scenarios/baselineLoadTest.js"
+    "test:load:report": "k6 run load-tests/scenarios/baselineLoadTest.js",
+    "test:security": "node vulnerability-tests/scripts/runVulnerabilityScan.js"
   },
   "dependencies": {
     "jspdf": "^4.2.1",
