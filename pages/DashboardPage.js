@@ -6,20 +6,20 @@ export class DashboardPage extends BasePage {
     super(driver);
     this.path = '/main';
 
-    // Locators
-    this.navbar = By.css('nav, header, .navbar');
+    // Locators using W3C compliant CSS and XPath selectors
+    this.navbar = By.css('nav, header, .navbar, div[style*="glass"]');
     this.sidebar = By.css('aside, .sidebar, .drawer');
-    this.navbarLinks = By.css('nav a, header a');
+    this.navbarLinks = By.css('nav a, header a, a[href*="/"]');
     this.sidebarLinks = By.css('aside a, .sidebar a');
     this.userMenu = By.css('.user-menu, .profile-dropdown, button[aria-label*="user"], .avatar');
-    this.logoutButton = By.css('button:contains("Logout"), a:contains("Logout"), button.logout-btn');
+    this.logoutButton = By.xpath('//button[contains(text(), "Logout")] | //a[contains(text(), "Logout")] | //button[contains(text(), "Log Out")]');
     
     // UI Component Locators
-    this.searchInput = By.css('input[type="search"], input[placeholder*="Search"], input#search');
+    this.searchInput = By.css('input[type="search"], input[placeholder*="Search"]');
     this.dataTable = By.css('table, .data-table');
     this.tableRows = By.css('table tbody tr, .data-table-row');
-    this.paginationNext = By.css('button[aria-label="Next"], button:contains("Next"), .pagination-next');
-    this.paginationPrev = By.css('button[aria-label="Previous"], button:contains("Previous"), .pagination-prev');
+    this.paginationNext = By.css('button[aria-label="Next"], .pagination-next');
+    this.paginationPrev = By.css('button[aria-label="Previous"], .pagination-prev');
     this.modalContainer = By.css('.modal, [role="dialog"], .dialog-content');
     this.modalCloseButton = By.css('.modal-close, button[aria-label="Close"], button.close');
     this.loaderSpinner = By.css('.spinner, .loader, [role="progressbar"]');
@@ -42,11 +42,15 @@ export class DashboardPage extends BasePage {
     if (await this.utils.isElementPresent(this.userMenu, 2000)) {
       await this.utils.safeClick(this.userMenu);
     }
-    await this.utils.safeClick(this.logoutButton);
+    if (await this.utils.isElementPresent(this.logoutButton, 2000)) {
+      await this.utils.safeClick(this.logoutButton);
+    }
   }
 
   async searchTable(query) {
-    await this.utils.safeType(this.searchInput, query);
+    if (await this.utils.isElementPresent(this.searchInput, 2000)) {
+      await this.utils.safeType(this.searchInput, query);
+    }
   }
 
   async getTableRowCount() {

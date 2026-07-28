@@ -1,0 +1,10 @@
+{
+  "testName": "UI Components E2E Test Suite TC-UI-001: Should verify buttons and input fields rendering",
+  "timestamp": "2026-07-28T05:48:24.930Z",
+  "currentUrl": "http://localhost:5173/login",
+  "failureReason": "expected false to be true",
+  "stackTrace": "AssertionError: expected false to be true\n    at Context.<anonymous> (file:///C:/Users/sanja/OneDrive/Desktop/PDD%20App/tests/e2e/uiComponents.test.js:27:33)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\UI_Components_E2E_Test_Suite_TC-UI-001__Should_verify_buttons_and_input_fields_rendering_2026-07-28T05-48-24-534Z.png",
+  "consoleLogsPath": "N/A",
+  "browserLogs": []
+}

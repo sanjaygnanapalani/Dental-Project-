@@ -1,0 +1,10 @@
+{
+  "testName": "Form Validation E2E Test Suite TC-FORM-005: Should sanitize or reject special character / XSS inputs safely",
+  "timestamp": "2026-07-28T05:48:20.122Z",
+  "currentUrl": "http://localhost:5173/signup",
+  "failureReason": "Element not located: By(css selector, input[name=\"name\"], input[placeholder*=\"Name\"], input#name)\nWait timed out after 15549ms",
+  "stackTrace": "TimeoutError: Element not located: By(css selector, input[name=\"name\"], input[placeholder*=\"Name\"], input#name)\nWait timed out after 15549ms\n    at C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\node_modules\\selenium-webdriver\\lib\\webdriver.js:929:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\Form_Validation_E2E_Test_Suite_TC-FORM-005__Should_sanitize_or_reject_special_character___XSS_inputs_safely_2026-07-28T05-48-19-984Z.png",
+  "consoleLogsPath": "N/A",
+  "browserLogs": []
+}

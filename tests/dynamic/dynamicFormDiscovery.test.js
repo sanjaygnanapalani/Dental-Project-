@@ -3,6 +3,8 @@ import DriverFactory from '../../utilities/DriverFactory.js';
 import RouteAndFormScanner from '../../utilities/RouteAndFormScanner.js';
 import SeleniumUtils from '../../utilities/SeleniumUtils.js';
 import Logger from '../../utilities/Logger.js';
+import Config from '../../config/env.config.js';
+import { By } from 'selenium-webdriver';
 
 describe('Dynamic React Route & Form Discovery Test Engine', function () {
   let driver;
@@ -30,11 +32,12 @@ describe('Dynamic React Route & Form Discovery Test Engine', function () {
       Logger.info(`--------------------------------------------------`);
       Logger.info(`Dynamic Scanner inspecting route: ${relativeRoute}`);
       
+      const targetUrl = `${Config.baseUrl}${relativeRoute.startsWith('/') ? relativeRoute : '/' + relativeRoute}`;
       try {
-        await driver.get(`${scanner.seleniumUtils.baseUrl}${relativeRoute}`);
+        await driver.get(targetUrl);
         await utils.driver.sleep(1000);
       } catch (err) {
-        Logger.warn(`Could not navigate to route ${relativeRoute}: ${err.message}`);
+        Logger.warn(`Could not navigate to route ${targetUrl}: ${err.message}`);
         continue;
       }
 
@@ -48,17 +51,13 @@ describe('Dynamic React Route & Form Discovery Test Engine', function () {
             Logger.info(`Running Dynamic Test Vector: ${testCase.name} on route [${relativeRoute}]`);
             
             try {
-              // Re-locate input in DOM to avoid stale element reference
-              const activeInput = await utils.waitForElementLocated(
-                inputRule.name.includes('_') 
-                  ? scanner.driver.findElements(By.css(`[name="${inputRule.name}"], [placeholder="${inputRule.placeholder}"]`)) 
-                  : scanner.driver.findElement(By.css(`input`))
-              ).catch(() => null);
+              const activeInputs = await driver.findElements(By.css('input'));
 
-              if (activeInput) {
-                await activeInput.clear().catch(() => {});
+              if (activeInputs.length > 0) {
+                const targetInput = activeInputs[0];
+                await targetInput.clear().catch(() => {});
                 if (testCase.value) {
-                  await activeInput.sendKeys(testCase.value).catch(() => {});
+                  await targetInput.sendKeys(testCase.value).catch(() => {});
                 }
               }
 
@@ -66,7 +65,6 @@ describe('Dynamic React Route & Form Discovery Test Engine', function () {
                 await formObj.submitButton.click().catch(() => {});
               }
 
-              // Verify browser did not crash and remains stable
               const currentUrl = await driver.getCurrentUrl();
               expect(currentUrl).to.be.a('string');
             } catch (err) {

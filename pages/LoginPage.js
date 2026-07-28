@@ -6,13 +6,13 @@ export class LoginPage extends BasePage {
     super(driver);
     this.path = '/login';
 
-    // Locators
-    this.usernameInput = By.css('input[type="email"], input[name="email"], input[name="username"], input[placeholder*="Email"], input[placeholder*="Username"], input#username, input#email');
-    this.passwordInput = By.css('input[type="password"], input[name="password"], input[placeholder*="Password"], input#password');
-    this.loginButton = By.css('button[type="submit"], input[type="submit"], button.btn-primary, button:contains("Login"), button');
-    this.errorMessage = By.css('.error-message, .alert-danger, .error, [role="alert"], p.text-red-500');
-    this.signupLink = By.css('a[href*="signup"], a:contains("Sign up"), a:contains("Register")');
-    this.forgotPasswordLink = By.css('a[href*="forgot"], a:contains("Forgot Password")');
+    // Locators using W3C compliant CSS and XPath selectors
+    this.usernameInput = By.css('input[type="email"], input[name="email"], input[placeholder*="email"]');
+    this.passwordInput = By.css('input[type="password"], input[name="password"], input[placeholder*="••••"]');
+    this.loginButton = By.css('button[type="submit"]');
+    this.errorMessage = By.xpath('//span[contains(@style, "error")] | //div[contains(@style, "error")] | //*[contains(@class, "error")]');
+    this.signupLink = By.css('a[href*="signup"]');
+    this.forgotPasswordLink = By.css('a[href*="forgot"]');
   }
 
   async open() {
@@ -32,12 +32,20 @@ export class LoginPage extends BasePage {
   }
 
   async login(username, password) {
-    if (username !== undefined && username !== null) {
+    if (username !== undefined && username !== null && username !== '') {
       await this.enterUsername(username);
+    } else {
+      const emailEl = await this.utils.waitForElementVisible(this.usernameInput);
+      await emailEl.clear();
     }
-    if (password !== undefined && password !== null) {
+
+    if (password !== undefined && password !== null && password !== '') {
       await this.enterPassword(password);
+    } else {
+      const passEl = await this.utils.waitForElementVisible(this.passwordInput);
+      await passEl.clear();
     }
+    
     await this.clickLogin();
   }
 

@@ -1,0 +1,10 @@
+{
+  "testName": "Authentication E2E Test Suite TC-AUTH-006: Should handle logout flow cleanly",
+  "timestamp": "2026-07-28T05:47:38.666Z",
+  "currentUrl": "http://localhost:5173/main",
+  "failureReason": "invalid selector: An invalid or illegal selector was specified\n  (Session info: MicrosoftEdge=150.0.4078.99)",
+  "stackTrace": "InvalidSelectorError: invalid selector: An invalid or illegal selector was specified\n  (Session info: MicrosoftEdge=150.0.4078.99)\n    at Object.throwDecodedError (node_modules\\selenium-webdriver\\lib\\error.js:523:15)\n    at parseHttpResponse (node_modules\\selenium-webdriver\\lib\\http.js:527:13)\n    at Executor.execute (node_modules\\selenium-webdriver\\lib\\http.js:459:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Driver.execute (node_modules\\selenium-webdriver\\lib\\webdriver.js:745:17)\n    at async Driver.findElements (node_modules\\selenium-webdriver\\lib\\webdriver.js:1073:17)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\Authentication_E2E_Test_Suite_TC-AUTH-006__Should_handle_logout_flow_cleanly_2026-07-28T05-47-38-523Z.png",
+  "consoleLogsPath": "N/A",
+  "browserLogs": []
+}

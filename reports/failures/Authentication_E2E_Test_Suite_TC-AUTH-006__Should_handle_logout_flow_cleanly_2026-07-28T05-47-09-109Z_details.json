@@ -1,0 +1,31 @@
+{
+  "testName": "Authentication E2E Test Suite TC-AUTH-006: Should handle logout flow cleanly",
+  "timestamp": "2026-07-28T05:47:09.316Z",
+  "currentUrl": "http://localhost:5173/main",
+  "failureReason": "invalid selector: An invalid or illegal selector was specified\n  (Session info: chrome=150.0.7871.129)",
+  "stackTrace": "InvalidSelectorError: invalid selector: An invalid or illegal selector was specified\n  (Session info: chrome=150.0.7871.129)\n    at Object.throwDecodedError (node_modules\\selenium-webdriver\\lib\\error.js:523:15)\n    at parseHttpResponse (node_modules\\selenium-webdriver\\lib\\http.js:527:13)\n    at Executor.execute (node_modules\\selenium-webdriver\\lib\\http.js:459:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Driver.execute (node_modules\\selenium-webdriver\\lib\\webdriver.js:745:17)\n    at async Driver.findElements (node_modules\\selenium-webdriver\\lib\\webdriver.js:1073:17)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\Authentication_E2E_Test_Suite_TC-AUTH-006__Should_handle_logout_flow_cleanly_2026-07-28T05-47-09-109Z.png",
+  "consoleLogsPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\logs\\Authentication_E2E_Test_Suite_TC-AUTH-006__Should_handle_logout_flow_cleanly_2026-07-28T05-47-09-109Z_browser.log",
+  "browserLogs": [
+    "[2026-07-28T05:47:03.088Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:03.093Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:03.122Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:03.177Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:03.257Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:03.262Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:03.281Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:03.327Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:03.412Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:03.418Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:03.440Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:03.699Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:03.777Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:03.788Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:03.814Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:03.863Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:03.922Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:03.935Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:03.950Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:04.021Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\""
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "testName": "UI Components E2E Test Suite TC-UI-001: Should verify buttons and input fields rendering",
+  "timestamp": "2026-07-28T05:47:56.915Z",
+  "currentUrl": "http://localhost:5173/login",
+  "failureReason": "expected false to be true",
+  "stackTrace": "AssertionError: expected false to be true\n    at Context.<anonymous> (file:///C:/Users/sanja/OneDrive/Desktop/PDD%20App/tests/e2e/uiComponents.test.js:27:33)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\UI_Components_E2E_Test_Suite_TC-UI-001__Should_verify_buttons_and_input_fields_rendering_2026-07-28T05-47-56-187Z.png",
+  "consoleLogsPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\logs\\UI_Components_E2E_Test_Suite_TC-UI-001__Should_verify_buttons_and_input_fields_rendering_2026-07-28T05-47-56-187Z_browser.log",
+  "browserLogs": [
+    "[2026-07-28T05:47:55.650Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:55.693Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:56.007Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:56.234Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:56.427Z] [DEBUG] http://localhost:5173/login - [DOM] Input elements should have autocomplete attributes (suggested: \"current-password\"): (More info: https://goo.gl/9p2vKq)"
+  ]
+}

@@ -2,7 +2,12 @@ import { expect } from 'chai';
 import DriverFactory from '../../utilities/DriverFactory.js';
 import LoginPage from '../../pages/LoginPage.js';
 import DashboardPage from '../../pages/DashboardPage.js';
-import testData from '../../data/testData.json' assert { type: 'json' };
+import fs from 'fs';
+import path from 'path';
+
+const testData = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'data', 'testData.json'), 'utf8')
+);
 
 describe('Authentication E2E Test Suite', function () {
   let driver;

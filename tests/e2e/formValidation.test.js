@@ -1,7 +1,12 @@
 import { expect } from 'chai';
 import DriverFactory from '../../utilities/DriverFactory.js';
 import SignUpPage from '../../pages/SignUpPage.js';
-import testData from '../../data/testData.json' assert { type: 'json' };
+import fs from 'fs';
+import path from 'path';
+
+const testData = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'data', 'testData.json'), 'utf8')
+);
 
 describe('Form Validation E2E Test Suite', function () {
   let driver;

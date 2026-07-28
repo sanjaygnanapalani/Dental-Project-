@@ -24,7 +24,7 @@ jobs:
       - name: 2. Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: 3. Install Node.js Dependencies
@@ -42,11 +42,11 @@ jobs:
         with:
           firefox-version: latest
 
-      - name: 6. Build / Start React Application in Background
+      - name: 6. Build & Launch React Application
         run: |
           npm run build
-          npx serve -s dist -l 5173 &
-          sleep 5
+          npx vite preview --port 5173 --host &
+          npx wait-on http://localhost:5173 --timeout 30000
 
       - name: 7. Run Selenium Headless E2E Test Suite
         env:

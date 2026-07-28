@@ -1,0 +1,17 @@
+{
+  "testName": "Form Validation E2E Test Suite TC-FORM-005: Should sanitize or reject special character / XSS inputs safely",
+  "timestamp": "2026-07-28T05:47:49.280Z",
+  "currentUrl": "http://localhost:5173/signup",
+  "failureReason": "Element not located: By(css selector, input[name=\"name\"], input[placeholder*=\"Name\"], input#name)\nWait timed out after 15533ms",
+  "stackTrace": "TimeoutError: Element not located: By(css selector, input[name=\"name\"], input[placeholder*=\"Name\"], input#name)\nWait timed out after 15533ms\n    at C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\node_modules\\selenium-webdriver\\lib\\webdriver.js:929:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "screenshotPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\screenshots\\Form_Validation_E2E_Test_Suite_TC-FORM-005__Should_sanitize_or_reject_special_character___XSS_inputs_safely_2026-07-28T05-47-48-642Z.png",
+  "consoleLogsPath": "C:\\Users\\sanja\\OneDrive\\Desktop\\PDD App\\reports\\failures\\logs\\Form_Validation_E2E_Test_Suite_TC-FORM-005__Should_sanitize_or_reject_special_character___XSS_inputs_safely_2026-07-28T05-47-48-642Z_browser.log",
+  "browserLogs": [
+    "[2026-07-28T05:47:32.937Z] [DEBUG] http://localhost:5173/@vite/client 850:8 \"[vite] connecting...\"",
+    "[2026-07-28T05:47:32.967Z] [DEBUG] http://localhost:5173/@vite/client 954:11 \"[vite] connected.\"",
+    "[2026-07-28T05:47:32.999Z] [INFO] http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=3dab2682 14335:48 \"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools\" \"font-weight:bold\"",
+    "[2026-07-28T05:47:33.083Z] [INFO] http://localhost:5173/src/lib/db.js 72:10 \"SQLite database initialized & persisted to IndexedDB via localforage\"",
+    "[2026-07-28T05:47:33.258Z] [DEBUG] http://localhost:5173/signup - [DOM] Input elements should have autocomplete attributes (suggested: \"new-password\"): (More info: https://goo.gl/9p2vKq) %o",
+    "[2026-07-28T05:47:33.258Z] [DEBUG] http://localhost:5173/signup - [DOM] Input elements should have autocomplete attributes (suggested: \"new-password\"): (More info: https://goo.gl/9p2vKq) %o"
+  ]
+}

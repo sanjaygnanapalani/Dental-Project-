@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import DriverFactory from '../../utilities/DriverFactory.js';
 import DashboardPage from '../../pages/DashboardPage.js';
 import LoginPage from '../../pages/LoginPage.js';
+import Logger from '../../utilities/Logger.js';
 
 describe('UI Components E2E Test Suite', function () {
   let driver;
@@ -46,7 +47,6 @@ describe('UI Components E2E Test Suite', function () {
     await loginPage.open();
     await loginPage.login('invalid@test.com', 'wrong');
     const toast = await loginPage.getToastOrAlertMessage();
-    // Toast message or alert captured cleanly
-    Logger.debug(`UI Alert captured: ${toast}`);
+    Logger.info(`UI Alert captured: ${toast}`);
   });
 });

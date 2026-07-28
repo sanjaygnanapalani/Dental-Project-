@@ -6,16 +6,18 @@ export class SignUpPage extends BasePage {
     super(driver);
     this.path = '/signup';
 
-    // Locators
-    this.nameInput = By.css('input[name="name"], input[placeholder*="Name"], input#name');
-    this.emailInput = By.css('input[type="email"], input[name="email"], input[placeholder*="Email"], input#email');
-    this.phoneInput = By.css('input[type="tel"], input[name="phone"], input[placeholder*="Phone"], input#phone');
-    this.passwordInput = By.css('input[name="password"], input[placeholder="Password"], input#password');
-    this.confirmPasswordInput = By.css('input[name="confirmPassword"], input[placeholder*="Confirm"], input#confirmPassword');
-    this.termsCheckbox = By.css('input[type="checkbox"], input#terms');
-    this.submitButton = By.css('button[type="submit"], button.btn-primary');
-    this.errorMessage = By.css('.error-message, .alert-danger, [role="alert"], p.text-red-500');
-    this.loginLink = By.css('a[href*="login"], a:contains("Login")');
+    // Locators using W3C compliant CSS and XPath selectors
+    this.firstNameInput = By.xpath('(//input[@type="text"])[1]');
+    this.lastNameInput = By.xpath('(//input[@type="text"])[2]');
+    this.emailInput = By.css('input[type="email"]');
+    this.phoneInput = By.css('input[type="tel"]');
+    this.institutionInput = By.xpath('(//input[@type="text"])[3]');
+    this.passwordInput = By.xpath('(//input[@type="password"])[1]');
+    this.confirmPasswordInput = By.xpath('(//input[@type="password"])[2]');
+    this.termsCheckbox = By.css('input[type="checkbox"]');
+    this.submitButton = By.css('button[type="submit"]');
+    this.errorMessage = By.xpath('//span[contains(@style, "error-red")] | //div[contains(@style, "error-red")] | //*[contains(@class, "error")]');
+    this.loginLink = By.css('a[href*="login"]');
   }
 
   async open() {
@@ -23,7 +25,8 @@ export class SignUpPage extends BasePage {
   }
 
   async fillRegistrationForm(data = {}) {
-    if (data.name) await this.utils.safeType(this.nameInput, data.name);
+    if (data.firstName || data.name) await this.utils.safeType(this.firstNameInput, data.firstName || data.name);
+    if (data.lastName) await this.utils.safeType(this.lastNameInput, data.lastName);
     if (data.email) await this.utils.safeType(this.emailInput, data.email);
     if (data.phone) await this.utils.safeType(this.phoneInput, data.phone);
     if (data.password) await this.utils.safeType(this.passwordInput, data.password);
